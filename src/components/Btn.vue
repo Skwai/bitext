@@ -12,4 +12,13 @@
   background: colorPrimary
   color: #fff
   border-radius: borderRadiusBase
+  text-transform: uppercase
+  font-family: fontSizeSmall
+  font-weight: 500
+  letter-spacing: 0.05em
+  cursor: pointer
+  transition: 0.2s
+
+  &:hover
+    background: darken(colorPrimary, 5)
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="App">
-    <h1>Bitcoin SMS Notifications</h1>
+    <h1>Bitcoin Notifications</h1>
 
     <AppForm />
   </div>
@@ -24,21 +24,30 @@ html
   font-size: fontSizeRoot
 
 body
-  background: colorDarkBlue
+  background: #eaebec
   padding: spacingBase
   font-family: fontFamilyBase
   line-height: lineHeightBase
-  color: #fff
+  color: colorFont
   min-height: 100vh
   display: flex
   align-items: center
   justify-content: center
 
-button, input, textarea
+button,
+input,
+textarea,
+select
   font-size: 1rem
   line-height: lineHeightBase
   font-family: inherit
+  color: inherit
+
+h1
+  margin-bottom: spacingBase
+  text-align: center
 
 #App
+  width: 100%
   max-width: 400px
 </style>
