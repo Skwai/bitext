@@ -38,8 +38,12 @@ export default {
 .Price
   margin-bottom: spacingBase
   text-align: center
-  border-top: rgba(colorPrimary, .2) solid 2px
   padding: spacingBase
+  // background: rgba(colorPrimary, 1)
+  // color: #fff
+  // border: rgba(colorPrimary, .2) solid 2px
+  // border-radius: borderRadiusBase
+  border-top: rgba(colorPrimary, .2) solid 2px
   border-bottom: rgba(colorPrimary, .2) solid 2px
 
   &__Label

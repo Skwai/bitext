@@ -32,11 +32,6 @@ body
   font-family: fontFamilyBase
   line-height: lineHeightBase
   color: colorFont
-  min-height: 100vh
-  display: flex
-  align-items: center
-  justify-content: center
-  color: #4A90E2
 
 button,
 input,
@@ -57,4 +52,5 @@ h1
 #App
   width: 28rem
   max-width: 100%
+  margin: 5vh auto 5vh
 </style>
