@@ -1,6 +1,12 @@
 <template>
-  <button type="submit" class="Btn"><slot /></button>
+  <button type="submit" class="Btn" :disabled="!!disabled"><slot /></button>
 </template>
+
+<script>
+export default {
+  props: ['disabled']
+}
+</script>
 
 <style lang="stylus">
 @require "../styles/config.styl"

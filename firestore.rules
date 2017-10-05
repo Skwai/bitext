@@ -1,0 +1,13 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{document=**} {
+      allow write;
+    }
+    match /countries/{document=**} {
+      allow read;
+    }
+    match /currencies/{document=**} {
+      allow read;
+    }
+  }
+}

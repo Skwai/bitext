@@ -1,16 +1,17 @@
 <template>
   <div id="App">
-    <h1>Bitcoin Notifications</h1>
-
+    <AppHeader />
     <AppForm />
   </div>
 </template>
 
 <script>
+import AppHeader from '@/components/AppHeader'
 import AppForm from '@/components/AppForm'
 
 export default {
   components: {
+    AppHeader,
     AppForm
   }
 }
