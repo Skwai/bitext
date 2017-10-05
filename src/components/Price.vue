@@ -3,7 +3,7 @@
     <div class="Price__Label">Current Price</div>
     <Loading v-if="loading" />
     <h2 v-else-if="btcPrice" class="Price__Value">
-      <span>{{btcPrice.toFixed(2).toLocaleString()}}</span>
+      <span><small class="Price__Symbol">$</small>{{btcPrice.toFixed(2).toLocaleString()}}</span>
       <small class="Price__Currency">USD</small>
     </h2>
   </div>
@@ -39,23 +39,25 @@ export default {
   margin-bottom: spacingBase
   text-align: center
   padding: spacingBase
-  // background: rgba(colorPrimary, 1)
-  // color: #fff
-  // border: rgba(colorPrimary, .2) solid 2px
-  // border-radius: borderRadiusBase
   border-top: rgba(colorPrimary, .2) solid 2px
   border-bottom: rgba(colorPrimary, .2) solid 2px
 
   &__Label
     caps()
-    margin-bottom: 0.5rem
+    margin-bottom: 0.25rem
+    opacity: .7
 
   &__Value
     font-weight: 600
+    font-size: 2rem
 
+  &__Symbol,
   &__Currency
     font-weight: 400
     letter-spacing: 0.05em
-    opacity: .6
+    opacity: .7
+    font-size: 62.5%
+    vertical-align: baseline
+    transform: translateY(-0.5rem)
     display: inline-block
 </style>

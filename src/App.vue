@@ -25,7 +25,18 @@ export default {
 @require "./styles/config.styl"
 
 html
-  font-size: fontSizeRoot
+  font-size: fontSizeMobile
+
+  @media (min-width: 768px)
+    font-size: fontSizeTablet
+
+  @media (min-width: 1024px)
+    font-size: fontSizeDesktop
+
+  @media (min-width: 1280px)
+    font-size: fontSizeBase
+
+
 
 body
   padding: spacingBase

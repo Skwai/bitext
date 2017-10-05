@@ -20,6 +20,7 @@ export default {}
   &__Title
     font-size: 1.25rem
     font-weight: 500
+    letter-spacing: 0.05em
 
   &__Logo
     width: 4rem

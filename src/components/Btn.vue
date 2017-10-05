@@ -14,7 +14,7 @@ export default {
 .Btn
   border: 0
   background: transparent
-  padding: 0.65rem 2rem
+  padding: 0.75rem 2rem
   background: colorPrimary
   color: #fff
   border-radius: borderRadiusBase
