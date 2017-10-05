@@ -1,6 +1,7 @@
 <template>
   <div id="App">
     <AppHeader />
+    <Price />
     <AppForm />
   </div>
 </template>
@@ -8,11 +9,13 @@
 <script>
 import AppHeader from '@/components/AppHeader'
 import AppForm from '@/components/AppForm'
+import Price from '@/components/Price'
 
 export default {
   components: {
     AppHeader,
-    AppForm
+    AppForm,
+    Price
   }
 }
 </script>
@@ -25,7 +28,6 @@ html
   font-size: fontSizeRoot
 
 body
-  background: #eaebec
   padding: spacingBase
   font-family: fontFamilyBase
   line-height: lineHeightBase
@@ -34,6 +36,7 @@ body
   display: flex
   align-items: center
   justify-content: center
+  color: #4A90E2
 
 button,
 input,
@@ -48,7 +51,10 @@ h1
   margin-bottom: spacingBase
   text-align: center
 
+*
+  box-sizing: border-box
+
 #App
-  width: 100%
-  max-width: 400px
+  width: 28rem
+  max-width: 100%
 </style>

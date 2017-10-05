@@ -4,10 +4,19 @@
     <template v-else>
       <Loading v-if="loading || submitting" />
       <form v-else @submit.prevent="submit">
-        <div class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
+        <div
+          class="AppForm__Field"
+          :class="{
+            '-valid': validations.phoneNumber,
+            '-invalid': !validations.phoneNumber
+          }"
+        >
           <label class="AppForm__Label">Text me on</label>
           <div class="AppForm__Inputs">
-            <select class="AppForm__Input" v-model="user.phoneCountryCode">
+            <select
+              class="AppForm__Input"
+              v-model.lazy="user.phoneCountryCode"
+            >
               <option
                 v-for="(country, id) in countries"
                 :key="id"
@@ -23,33 +32,39 @@
           </div>
         </div>
 
-        <div class="AppForm__Field" :class="{ '-valid': validations.low }">
-          <label class="AppForm__Label">If price drops below (USD)</label>
+        <div class="AppForm__Field" :class="{ '-valid': validations.low,
+            '-invalid': !validations.low }">
+          <label class="AppForm__Label">If Bitcoin price drops below</label>
           <div class="AppForm__Inputs">
             <input
               class="AppForm__Input"
               type="number"
               v-model.number="user.low"
-              placeholder="$"
+              placeholder="$ USD"
               min="0"
             >
           </div>
         </div>
 
-        <div class="AppForm__Field" :class="{ '-valid': validations.high }">
-          <label class="AppForm__Label">Or rises above (USD)</label>
+        <div class="AppForm__Field" :class="{ '-valid': validations.high,
+            '-invalid': !validations.high }">
+          <label class="AppForm__Label">Or rises above</label>
           <div class="AppForm__Inputs">
             <input
               class="AppForm__Input"
               type="number"
               v-model.number="user.high"
-              placeholder="$"
+              placeholder="$ USD"
               min="0"
             >
           </div>
         </div>
 
-        <Btn :disabled="!isValid">Confirm</Btn>
+        <div class="AppForm__Submit">
+          <Btn :disabled="!isValid">Confirm</Btn>
+          <div class="AppForm__SubmitInfo">We won't text you more than once a day</div>
+        </div>
+
       </form>
     </template>
   </div>
@@ -132,17 +147,10 @@ export default {
 @require "../styles/config"
 
 .AppForm
-  text-transform: uppercase
-  font-weight: 600
-  background: #fff
-  padding: spacingBase
-  border-radius: borderRadiusBase
-
   &__Label
     display: block
     margin-bottom: spacingSmall
-    font-size: fontSizeSmall
-    color: rgba(colorFont, 0.6)
+    font-weight: 500
 
   &__Field
     margin: 0 0 spacingBase
@@ -150,29 +158,70 @@ export default {
 
   &__Inputs
     display: flex
-    background: rgba(colorFont, 0.05)
+    background: #fff
     border-radius: 2px
+    box-shadow: currentColor 0 0 0 1px
+    position: relative
+
+    &::after
+      position: absolute
+      content: ""
+      background: currentColor
+      right: 0
+      height: 100%
+      top: 0
+      width: 2.5rem
+      opacity: 0
+      background-size: 1.5rem 1.5rem
+      background-position: center center
+      background-repeat: no-repeat
+
 
     .-valid &
-      box-shadow: inset #24C875 0 0 0 1px
+      color: colorPrimary
 
+      &::after
+        opacity: 1
+        background-image: embedurl("../assets/check.svg", "utf8")
+
+    /*
     .-invalid &
-      box-shadow: inset #D0021B 0 0 0 1px
+      color: #D0021B
+
+      &::after
+        opacity: 1
+        background-image: embedurl("../assets/remove.svg", "utf8")
+    */
+
+  &__Input + &__Input
+    border-left: currentColor solid 1px
 
   &__Input
     padding: spacingSmall
-    border-radius: 4px
     border: 0
     background: transparent
     -webkit-appearance: none
     box-sizing: border-box
+    transition: transitionBase
 
     input&
       flex: 1
 
     &::placeholder
-      color: fontColor
+      color: currentColor
+      opacity: .7
 
     &:focus
       outline: 0
+      background: rgba(colorPrimary, .1)
+
+  &__Submit
+    display: flex
+    align-items: center
+    margin-top: 2rem
+
+    &Info
+      margin-left: spacingBase
+      font-size: 87.5%
+      opacity: .7
 </style>

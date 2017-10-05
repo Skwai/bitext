@@ -14,7 +14,7 @@ export default {}
 .AppHeader
   width: 4rem
   height: 4rem
-  background: rgba(0,0,0,.1)
+  background: colorPrimary
   border-radius: 50%
   display: flex
   align-items: center
@@ -24,5 +24,5 @@ export default {}
   &__Logo
     width: 50%
     height: 50%
-    fill: rgba(0,0,0,.5)
+    fill: #fff
 </style>

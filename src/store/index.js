@@ -15,7 +15,8 @@ export default new Vuex.Store({
   mutations,
   state: {
     countries: {},
-    currencies: {}
+    currencies: {},
+    btcPrice: null
   },
   strict: debug
 })

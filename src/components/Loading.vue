@@ -44,7 +44,7 @@ export default {
 
     &Inner,
     &Outer
-      fill: colorPrimaryBlue
+      fill: colorPrimary
 
       .Loading--white &
         fill: #fff
