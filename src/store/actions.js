@@ -3,10 +3,8 @@ import * as types from '@/store/types'
 import config from '@/config'
 
 export const addUser = async (ctx, user) => {
-  const phoneCountryCode = db.collection('users').doc(user.phoneCountryCode)
   const data = {
-    ...user,
-    phoneCountryCode
+    ...user
   }
   await db.collection('users').add(data)
 }

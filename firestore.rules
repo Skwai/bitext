@@ -1,7 +1,7 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{document=**} {
-      allow write;
+      allow write, read;
     }
     match /countries/{document=**} {
       allow read;

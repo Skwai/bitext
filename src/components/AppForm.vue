@@ -15,12 +15,12 @@
           <div class="AppForm__Inputs">
             <select
               class="AppForm__Input"
-              v-model.lazy="user.phoneCountryCode"
+              v-model="user.phoneCountryCode"
             >
               <option
                 v-for="(country, id) in countries"
                 :key="id"
-                :value="id"
+                :value="country.phoneCountryCode"
               >{{country.phoneCountryCode}} ({{country.abbreviation}})</option>
             </select>
             <input
@@ -93,26 +93,20 @@ export default {
         createdA: new Date(),
         high: null,
         low: null,
-        phoneCountryCode: null,
+        phoneCountryCode: '+1',
         phoneNumber: null
       }
     }
   },
 
   computed: {
-    countryAbbreviation () {
-      const { user, countries } = this
-      return user.phoneCountryCode
-        ? countries[user.phoneCountryCode].abbreviation
-        : null
-    },
     validations () {
-      const { user, countryAbbreviation } = this
+      const { user } = this
 
       return {
         high: !isNaN(user.high) && Number(user.high) > 0,
         low: !isNaN(user.low) && Number(user.low) > 0,
-        phoneNumber: 'phone' in parse(user.phoneNumber, countryAbbreviation)
+        phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
       }
     },
     isValid () {
