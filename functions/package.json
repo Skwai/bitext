@@ -4,7 +4,8 @@
   "dependencies": {
     "firebase-admin": "^5.4.1",
     "firebase-functions": "^0.7",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "twilio": "^3.8.0"
   },
   "private": true
 }

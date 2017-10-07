@@ -1,0 +1,39 @@
+[debug] [2017-10-07T11:25:11.348Z] ----------------------------------------------------------------------
+[debug] [2017-10-07T11:25:11.351Z] Command:       /usr/local/Cellar/node/7.7.4/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2017-10-07T11:25:11.352Z] CLI Version:   3.13.1
+[debug] [2017-10-07T11:25:11.352Z] Platform:      darwin
+[debug] [2017-10-07T11:25:11.352Z] Node Version:  v7.7.4
+[debug] [2017-10-07T11:25:11.352Z] Time:          Sat Oct 07 2017 22:25:11 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:11.353Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-10-07T11:25:11.365Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-10-07T11:25:11.365Z] > authorizing via signed-in user
+[debug] [2017-10-07T11:25:11.367Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/innate-agency-110711  
+ Sat Oct 07 2017 22:25:11 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:13.567Z] ----------------------------------------------------------------------
+[debug] [2017-10-07T11:25:13.570Z] Command:       /usr/local/Cellar/node/7.7.4/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2017-10-07T11:25:13.570Z] CLI Version:   3.13.1
+[debug] [2017-10-07T11:25:13.570Z] Platform:      darwin
+[debug] [2017-10-07T11:25:13.570Z] Node Version:  v7.7.4
+[debug] [2017-10-07T11:25:13.571Z] Time:          Sat Oct 07 2017 22:25:13 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:13.571Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-10-07T11:25:13.582Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-10-07T11:25:13.582Z] > authorizing via signed-in user
+[debug] [2017-10-07T11:25:13.584Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/innate-agency-110711  
+ Sat Oct 07 2017 22:25:13 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:14.732Z] <<< HTTP RESPONSE 200
+[debug] [2017-10-07T11:25:14.734Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/innate-agency-110711/tokens  
+ Sat Oct 07 2017 22:25:14 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:15.626Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/cjensen/personal/bitcoin'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2017-10-07T11:25:15.895Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/innate-agency-110711  
+ Sat Oct 07 2017 22:25:15 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:15.895Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/innate-agency-110711/apiKeys  
+ Sat Oct 07 2017 22:25:15 GMT+1100 (AEDT)
+[debug] [2017-10-07T11:25:17.434Z] <<< HTTP RESPONSE 200
+[debug] [2017-10-07T11:25:17.507Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: checkPrice: http://localhost:5000/innate-agency-110711/us-central1/checkPrice
