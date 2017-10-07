@@ -13,6 +13,8 @@
 import { mapGetters } from 'vuex'
 import Loading from '@/components/Loading'
 
+const UPDATE_INTERVAL = 60 * 1000 // ms
+
 export default {
   components: {
     Loading
@@ -25,8 +27,17 @@ export default {
   computed: {
     ...mapGetters(['btcPrice'])
   },
+
+  methods: {
+    async getPrice () {
+      await this.$store.dispatch('getBtcPrice')
+      setTimeout(this.getPrice, UPDATE_INTERVAL)
+      return Promise.resolve()
+    }
+  },
+
   async created () {
-    await this.$store.dispatch('getBtcPrice')
+    await this.getPrice()
     this.loading = false
   }
 }
