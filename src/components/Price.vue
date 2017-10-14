@@ -3,8 +3,8 @@
     <div class="Price__Label">Current Price</div>
     <Loading v-if="loading" />
     <h2 v-else-if="btcPrice" class="Price__Value">
-      <span><small class="Price__Symbol">$</small>{{btcPrice.toFixed(2).toLocaleString()}}</span>
-      <small class="Price__Currency">USD</small>
+      <span><small class="Price__Symbol">$</small>{{price.dollars}}</span>
+      <small class="Price__Currency"> USD</small>
     </h2>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import { mapGetters } from 'vuex'
 import Loading from '@/components/Loading'
 
-const UPDATE_INTERVAL = 60 * 1000 // ms
+const UPDATE_INTERVAL = 30 * 1000 // ms
 
 export default {
   components: {
@@ -25,6 +25,13 @@ export default {
     }
   },
   computed: {
+    price () {
+      const [dollars, cents] = this.btcPrice.toFixed(2).toLocaleString().split('.')
+      return {
+        dollars,
+        cents
+      }
+    },
     ...mapGetters(['btcPrice'])
   },
 
@@ -64,11 +71,11 @@ export default {
 
   &__Symbol,
   &__Currency
-    font-weight: 400
+    font-weight: 500
     letter-spacing: 0.05em
     opacity: .7
-    font-size: 62.5%
+    font-size: 1rem
     vertical-align: baseline
-    transform: translateY(-0.5rem)
+    transform: translateY(-0.65rem)
     display: inline-block
 </style>

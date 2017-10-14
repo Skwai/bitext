@@ -6,8 +6,5 @@ service cloud.firestore {
     match /countries/{document=**} {
       allow read;
     }
-    match /currencies/{document=**} {
-      allow read;
-    }
   }
 }

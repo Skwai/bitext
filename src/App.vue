@@ -36,8 +36,6 @@ html
   @media (min-width: 1280px)
     font-size: fontSizeBase
 
-
-
 body
   padding: spacingBase
   font-family: fontFamilyBase

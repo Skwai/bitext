@@ -1,6 +1,9 @@
 <template>
   <div class="AppForm">
-    <div v-if="submitted">Done</div>
+    <div v-if="submitted" class="AppForm__Submitted">
+      <svg class="AppForm__SubmittedIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      <span class="AppForm__SubmittedMessage">All done</span>
+    </div>
     <template v-else>
       <Loading v-if="loading || submitting" />
       <form v-else @submit.prevent="submit">
@@ -11,7 +14,7 @@
             '-invalid': !validations.phoneNumber
           }"
         >
-          <label class="AppForm__Label">Text me on</label>
+          <label class="AppForm__Label">Text me once on</label>
           <div class="AppForm__Inputs">
             <select
               class="AppForm__Input"
@@ -32,37 +35,34 @@
           </div>
         </div>
 
-        <div class="AppForm__Field" :class="{ '-valid': validations.low,
-            '-invalid': !validations.low }">
-          <label class="AppForm__Label">If Bitcoin price drops below</label>
+        <div
+          class="AppForm__Field"
+          :class="{
+            '-valid': validations.price,
+            '-invalid': !validations.price
+          }"
+        >
+          <label class="AppForm__Label">When Bitcoin price is</label>
           <div class="AppForm__Inputs">
-            <input
+            <select
               class="AppForm__Input"
-              type="number"
-              v-model.number="user.low"
-              placeholder="$ USD"
-              min="0"
+              v-model="user.dir"
             >
-          </div>
-        </div>
-
-        <div class="AppForm__Field" :class="{ '-valid': validations.high,
-            '-invalid': !validations.high }">
-          <label class="AppForm__Label">Or rises above</label>
-          <div class="AppForm__Inputs">
+              <option value="GT">Greater than</option>
+              <option value="LT">Less than</option>
+            </select>
             <input
               class="AppForm__Input"
-              type="number"
-              v-model.number="user.high"
-              placeholder="$ USD"
-              min="0"
+              type="tel"
+              v-model.number="user.price"
+              placeholder="$"
             >
           </div>
         </div>
 
         <div class="AppForm__Submit">
           <Btn :disabled="!isValid">Confirm</Btn>
-          <div class="AppForm__SubmitInfo">We won't text you more than once a day</div>
+          <div class="AppForm__SubmitInfo">We won't share your details</div>
         </div>
 
       </form>
@@ -88,11 +88,13 @@ export default {
       submitted: false,
       submitting: false,
       loading: true,
+
       user: {
-        active: true,
-        createdA: new Date(),
-        high: null,
-        low: null,
+        created: new Date(),
+        notified: null,
+
+        price: null,
+        dir: 'GT',
         phoneCountryCode: '+1',
         phoneNumber: null
       }
@@ -104,8 +106,7 @@ export default {
       const { user } = this
 
       return {
-        high: !isNaN(user.high) && Number(user.high) > 0,
-        low: !isNaN(user.low) && Number(user.low) > 0,
+        price: !isNaN(user.price) && Number(user.price) > 0,
         phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
       }
     },
@@ -128,10 +129,7 @@ export default {
   },
 
   async created () {
-    await Promise.all([
-      this.$store.dispatch('getCountries')
-    ])
-    this.user.phoneCountryCode = Object.keys(this.countries).pop()
+    await this.$store.dispatch('getCountries')
     this.loading = false
   }
 }
@@ -149,6 +147,19 @@ export default {
   &__Field
     margin: 0 0 spacingBase
     align-items: center
+
+  &__Submitted
+    text-align: center
+
+    &Icon
+      width: 3rem
+      height: 3rem
+      fill: currentColor
+
+    &Message
+      display: block
+      text-transform: uppercase
+      font-weight: 600
 
   &__Inputs
     display: flex
@@ -197,6 +208,9 @@ export default {
     -webkit-appearance: none
     box-sizing: border-box
     transition: transitionBase
+
+    select&
+      width: 8rem
 
     input&
       flex: 1
