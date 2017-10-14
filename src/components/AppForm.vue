@@ -1,78 +1,80 @@
 <template>
-  <div class="AppForm">
-    <Loading v-if="loading || submitting" />
-    <form v-else @submit.prevent="submit">
-      <div class="AppForm__Error" v-if="error">{{error}}</div>
+  <Loading v-if="loading || submitting" />
+  <form v-else @submit.prevent="submit" class="AppForm">
 
-      <div
-        class="AppForm__Field"
-        :class="{
-          '-valid': validations.phoneNumber,
-          '-invalid': !validations.phoneNumber
-        }"
-      >
-        <label class="AppForm__Label">Text me on</label>
-        <div class="AppForm__Inputs">
-          <div class="AppForm__InputWrap -select">
-            <select
-              class="AppForm__Input"
-              v-model="user.phoneCountryCode"
-            >
-              <option
-                v-for="(country, id) in countries"
-                :key="id"
-                :value="country.phoneCountryCode"
-              >{{country.phoneCountryCode}} ({{country.abbreviation}})</option>
-            </select>
-          </div>
-          <div class="AppForm__InputWrap">
-            <input
-              class="AppForm__Input"
-              type="tel"
-              v-model="user.phoneNumber"
-              placeholder="Mobile number"
-            >
-          </div>
-        </div>
+    <div class="AppForm__Error" v-if="error">{{error}}</div>
+
+    <p
+      class="AppForm__Field"
+      :class="{
+        '-valid': validations.phoneNumber,
+        '-invalid': !validations.phoneNumber
+      }"
+    >
+      <div class="AppForm__Inputs">
+        <label class="AppForm__InputWrap -select">
+          <span class="AppForm__Label">Country Phone Code</span>
+          <select
+            class="AppForm__Input"
+            v-model="user.phoneCountryCode"
+          >
+            <option
+              v-for="(country, id) in countries"
+              :key="id"
+              :value="country.phoneCountryCode"
+            >{{country.phoneCountryCode}} ({{country.abbreviation}})</option>
+          </select>
+        </label>
+        <label class="AppForm__InputWrap">
+          <span class="AppForm__Label">Mobile Number</span>
+          <input
+            class="AppForm__Input"
+            type="tel"
+            v-model="user.phoneNumber"
+            placeholder="Mobile number"
+          >
+        </label>
       </div>
+    </p>
 
-      <div
-        class="AppForm__Field"
-        :class="{
-          '-valid': validations.price,
-          '-invalid': !validations.price
-        }"
-      >
-        <label class="AppForm__Label">When Bitcoin price is</label>
-        <div class="AppForm__Inputs">
-          <div class="AppForm__InputWrap -select">
-            <select
-              class="AppForm__Input -select"
-              v-model="user.dir"
-            >
-              <option value="GT">When more than</option>
-              <option value="LT">When less than</option>
-            </select>
-          </div>
-          <div class="AppForm__InputWrap">
-            <input
-              class="AppForm__Input"
-              type="tel"
-              v-model.number="user.price"
-              placeholder="$"
-            >
-          </div>
-        </div>
+    <p
+      class="AppForm__Field"
+      :class="{
+        '-valid': validations.price,
+        '-invalid': !validations.price
+      }"
+    >
+      <label class="AppForm__Label">When Bitcoin price is</label>
+      <div class="AppForm__Inputs">
+        <label class="AppForm__InputWrap -select">
+          <span class="AppForm__Label">When price is</span>
+          <select
+            class="AppForm__Input -select"
+            v-model="user.dir"
+          >
+            <option value="GT">When more than</option>
+            <option value="LT">When less than</option>
+          </select>
+        </label>
+        <label class="AppForm__InputWrap">
+          <span class="AppForm__Label">Price (USD)</span>
+          <input
+            class="AppForm__Input"
+            type="tel"
+            v-model.number="user.price"
+            placeholder="$ USD"
+          >
+        </label>
       </div>
+    </p>
 
-      <div class="AppForm__Submit">
-        <Btn :disabled="!isValid">Confirm</Btn>
-      </div>
+    <p class="AppForm__Submit">
+      <Btn :disabled="!isValid">Confirm</Btn>
+    </p>
 
-      <footer class="AppForm__Info">We won't share your details</footer>
+    <footer class="AppForm__Info">We won't share your details</footer>
 
-    </form>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -144,10 +146,7 @@ export default {
 
 .AppForm
   &__Label
-    display: block
-    margin-bottom: spacingSmall
-    caps()
-    display: none
+    sr()
 
   &__Field
     margin: 0 0 spacingBase
@@ -157,7 +156,7 @@ export default {
     color: colorError
     margin-bottom: spacingBase
     text-align: center
-    font-weight: 600
+    font-weight: 500
 
   &__Inputs
     display: flex

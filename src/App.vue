@@ -1,10 +1,10 @@
 <template>
-  <div id="App">
+  <main id="App">
     <AppHeader />
     <Price />
     <Submitted v-if="submitted" />
     <AppForm v-else />
-  </div>
+  </main>
 </template>
 
 <script>

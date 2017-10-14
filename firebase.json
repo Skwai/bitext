@@ -3,11 +3,32 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "dist",
+    "public": "dist/",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/favicon.ico",
+        "destination": "/static/favicon.png",
+        "type": 301
+      }
+    ],
+    "headers": [
+      {
+        "source" : "static/**/*",
+        "headers" : [{
+          "key" : "Cache-Control",
+          "value" : "max-age=31536000"
+        }]
       }
     ]
   },
