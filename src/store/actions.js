@@ -1,6 +1,7 @@
 import db from '@/services/firestore'
 import * as types from '@/store/types'
-import config from '@/config'
+
+const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
 export const addUser = async (ctx, user) => {
   const data = {
@@ -21,7 +22,7 @@ export const getCountries = async ({ commit }) => {
 
 export const getBtcPrice = async ({ commit }) => {
   try {
-    const response = await fetch(config.COINDESK.url, {
+    const response = await fetch(COINDESK_API_URL, {
       mode: 'cors',
       headers: {
         Accept: 'application/json'

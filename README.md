@@ -2,6 +2,10 @@
 
 > Bitcoin SMS notification app
 
+# CRON Job Scheduler
+
+https://cron-job.org/en/members/jobs/
+
 ## Build Setup
 
 ``` bash

@@ -6,8 +6,5 @@ export default {
     projectId: 'innate-agency-110711',
     storageBucket: '',
     messagingSenderId: '166930265608'
-  },
-  COINDESK: {
-    url: 'https://api.coindesk.com/v1/bpi/currentprice.json'
   }
 }

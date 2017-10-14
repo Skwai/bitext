@@ -3,10 +3,12 @@ const admin = require('firebase-admin')
 const fetch = require('node-fetch')
 const Twilio = require('twilio')
 
+const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
+
 // Init Twilio
 const client = new Twilio(
-  functions.config().TWILIO.accountSID,
-  functions.config().TWILIO.authToken
+  functions.config().twilio.accountsid,
+  functions.config().twilio.authtoken
 )
 
 // Init Firebase
@@ -18,25 +20,44 @@ const db = admin.firestore()
  * @return {Promise.<Number>}
  */
 const getPrice = () => {
-  return fetch(functions.config().COINDESK.url)
+  return fetch(COINDESK_API_URL)
     .then((res) => res.json())
     .then((data) => data.bpi.USD.rate_float)
 }
-exports.getPrice = getPrice
 
 /**
  * Get users who want to be notified of the price
- * @return {Number} price
+ * @param {Number} price
  * @return {Promise.<Array>}
  */
 const getUsers = (price) => {
-  const ref = db.collection('users')
   return Promise.all([
-    ref.where('notified', '==', null).where('dir', '==', 'GT').where('price', '<=', price).get(),
-    ref.where('notified', '==', null).where('dir', '==', 'LT').where('price', '>=', price).get()
-  ]).then(([high, low]) => high.docs.concat(low.docs))
+    getHighUsers(price),
+    getLowUsers(price)
+  ]).then(([high, low]) => {
+    return [].concat(high.docs).concat(low.docs)
+  })
 }
-exports.getUsers = getUsers
+
+/**
+ * Get users who want to be notified of a high price
+ * @param {Number} price
+ * @return {Promise}
+ */
+const getHighUsers = (price) => {
+  const collection = db.collection('users')
+  return collection.where('notified', '==', null).where('dir', '==', 'GT').where('price', '<=', price).get()
+}
+
+/**
+ * Get users who want to be notified of a low price
+ * @param {Number} price
+ * @return {Promise}
+ */
+const getLowUsers = (price) => {
+  const collection = db.collection('users')
+  return collection.where('notified', '==', null).where('dir', '==', 'LT').where('price', '>=', price).get()
+}
 
 /**
  * Get a user's phone number
@@ -47,7 +68,6 @@ const getUserPhoneNumber = (userData) => {
   const { phoneCountryCode, phoneNumber } = userData
   return [phoneCountryCode, phoneNumber].join('')
 }
-exports.getUserPhoneNumber = getUserPhoneNumber
 
 /**
  * Format price
@@ -55,7 +75,6 @@ exports.getUserPhoneNumber = getUserPhoneNumber
  * @return {String}
  */
 const formatPrice = (price) => `$${price.toFixed(2).toLocaleString()}`
-exports.formatPrice = formatPrice
 
 /**
  *
@@ -69,7 +88,6 @@ const sendUserMessage = (user, message) => {
   return sendMessage(phoneNumber, message)
     .then(() => setUserNotified(user))
 }
-exports.sendUserMessage = sendUserMessage
 
 /**
  * Send an SMS
@@ -81,10 +99,9 @@ const sendMessage = (to, body) => {
   return client.messages.create({
     to,
     body,
-    from: functions.config().TWILIO.phoneNumber
+    from: functions.config().twilio.phonenumber
   })
 }
-exports.sendMessage = sendMessage
 
 /**
  * Set notified on the user
@@ -96,7 +113,6 @@ const setUserNotified = (user) => {
     notified: new Date()
   })
 }
-exports.setUserNotified = setUserNotified
 
 /**
  * Listen to request
@@ -114,7 +130,7 @@ module.exports = functions.https.onRequest((req, res) => {
         Promise.all(users.map((user) => sendUserMessage(user, message)))
           .then(() => console.log('Messaging complete'))
       }
-      res.sendStatus(200).send()
+      res.sendStatus(200).end()
     })
   }).catch((err) => console.error(`Could not retreive price: ${err.message}`))
 })
