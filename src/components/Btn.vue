@@ -1,5 +1,9 @@
 <template>
-  <button type="submit" class="Btn" :disabled="!!disabled"><slot /></button>
+  <button
+    type="submit"
+    class="Btn"
+    :disabled="!!disabled"
+  ><slot /></button>
 </template>
 
 <script>

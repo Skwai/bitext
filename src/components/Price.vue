@@ -1,10 +1,9 @@
 <template>
   <div class="Price">
-    <div class="Price__Label">Current Price</div>
+    <div class="Price__Label">Current Price (USD)</div>
     <Loading v-if="loading" />
     <h2 v-else-if="btcPrice" class="Price__Value">
       <small class="Price__Symbol">$</small><span class="Price__Dollars">{{btcPrice.dollars}}</span>
-      <small class="Price__Currency"> USD</small>
     </h2>
   </div>
 </template>
@@ -58,8 +57,7 @@ export default {
   &__Value
     font-size: 2rem
 
-  &__Symbol,
-  &__Currency
+  &__Symbol
     font-weight: 500
     letter-spacing: 0.05em
     font-size: 1rem
