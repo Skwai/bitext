@@ -1,3 +1,3 @@
-const checkPrice = require('./check-price')
+const checkPrice = require('./lib/check-price')
 
 exports.checkPrice = checkPrice

@@ -113,6 +113,7 @@ const setUserNotified = (user) => {
     notified: new Date()
   })
 }
+exports.setUserNotified = setUserNotified
 
 /**
  * Listen to request

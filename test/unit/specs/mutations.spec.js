@@ -4,7 +4,7 @@ import * as types from '@/store/types'
 
 import { country } from '../mocks'
 
-describe('mutations', () => {
+describe('mutations.js', () => {
   describe(types.ADD_COUNTRY, () => {
     it('Adds a country object to the state', () => {
       const state = { countries: {} }

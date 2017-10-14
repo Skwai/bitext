@@ -2,8 +2,8 @@
   <div class="Price">
     <div class="Price__Label">Current Price (USD)</div>
     <Loading v-if="loading" />
-    <h2 v-else-if="btcPrice" class="Price__Value">
-      <small class="Price__Symbol">$</small><span class="Price__Dollars">{{btcPrice.dollars}}</span>
+    <h2 v-else-if="btcPriceDollars" class="Price__Value">
+      <small class="Price__Symbol">$</small><span class="Price__Dollars">{{btcPriceDollars}}</span>
     </h2>
   </div>
 </template>
@@ -21,9 +21,9 @@ export default {
 
   computed: {
     loading () {
-      return !this.btcPrice
+      return !this.btcPriceDollars
     },
-    ...mapGetters(['btcPrice'])
+    ...mapGetters(['btcPriceDollars'])
   },
 
   methods: {
