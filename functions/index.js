@@ -1,3 +1,4 @@
-const checkPrice = require('./lib/check-price')
+const notify = require('./lib/notify')
 
-exports.checkPrice = checkPrice
+exports.notify = notify
+exports.getPrice = getPrice

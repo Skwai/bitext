@@ -189,8 +189,6 @@ export default {
   &__InputWrap + &__InputWrap
     border-left: currentColor solid 1px
 
-
-
   &__InputWrap
     flex: 50%
     position: relative
@@ -219,6 +217,7 @@ export default {
     box-sizing: border-box
     transition: transitionBase
     width: 100%
+    border-radius: 0 // iOS
 
     &::placeholder
       color: currentColor
