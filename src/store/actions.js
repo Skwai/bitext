@@ -4,20 +4,23 @@ import * as types from '@/store/types'
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
 export const addUser = async (ctx, user) => {
-  const data = {
-    ...user
-  }
+  const data = { ...user }
   await db.collection('users').add(data)
 }
 
-export const getCurrencies = async ({ commit }) => {
-  const snapshot = await db.collection('currencies').get()
-  snapshot.forEach(doc => commit(types.ADD_CURRENCY, doc))
+export const getCountries = async ({ state, commit }) => {
+  if (!Object.keys(state.countries).length) {
+    const snapshot = await db.collection('countries').get()
+    snapshot.forEach(doc => commit(types.ADD_COUNTRY, doc))
+  }
 }
 
-export const getCountries = async ({ commit }) => {
-  const snapshot = await db.collection('countries').get()
-  snapshot.forEach(doc => commit(types.ADD_COUNTRY, doc))
+export const wasSubmitted = ({ commit }) => {
+  commit(types.SET_SUBMITTED)
+}
+
+export const resetSubmitted = ({ commit }) => {
+  commit(types.SET_UNSUBMITTED)
 }
 
 export const getBtcPrice = async ({ commit }) => {

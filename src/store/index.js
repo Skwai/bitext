@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import * as actions from './actions'
-import * as getters from './getters'
-import mutations from './mutations'
+import * as actions from '@/store/actions'
+import * as getters from '@/store/getters'
+import mutations from '@/store/mutations'
 
 Vue.use(Vuex)
 
@@ -15,8 +15,8 @@ export default new Vuex.Store({
   mutations,
   state: {
     countries: {},
-    currencies: {},
-    btcPrice: null
+    btcPrice: null,
+    submitted: false
   },
   strict: debug
 })

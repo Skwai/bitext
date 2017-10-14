@@ -1,21 +1,19 @@
 <template>
   <div class="AppForm">
-    <div v-if="submitted" class="AppForm__Submitted">
-      <svg class="AppForm__SubmittedIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-      <span class="AppForm__SubmittedMessage">All done</span>
-    </div>
-    <template v-else>
-      <Loading v-if="loading || submitting" />
-      <form v-else @submit.prevent="submit">
-        <div
-          class="AppForm__Field"
-          :class="{
-            '-valid': validations.phoneNumber,
-            '-invalid': !validations.phoneNumber
-          }"
-        >
-          <label class="AppForm__Label">Text me once on</label>
-          <div class="AppForm__Inputs">
+    <Loading v-if="loading || submitting" />
+    <form v-else @submit.prevent="submit">
+      <div class="AppForm__Error" v-if="error">{{error}}</div>
+
+      <div
+        class="AppForm__Field"
+        :class="{
+          '-valid': validations.phoneNumber,
+          '-invalid': !validations.phoneNumber
+        }"
+      >
+        <label class="AppForm__Label">Text me on</label>
+        <div class="AppForm__Inputs">
+          <div class="AppForm__InputWrap -select">
             <select
               class="AppForm__Input"
               v-model="user.phoneCountryCode"
@@ -26,6 +24,8 @@
                 :value="country.phoneCountryCode"
               >{{country.phoneCountryCode}} ({{country.abbreviation}})</option>
             </select>
+          </div>
+          <div class="AppForm__InputWrap">
             <input
               class="AppForm__Input"
               type="tel"
@@ -34,23 +34,27 @@
             >
           </div>
         </div>
+      </div>
 
-        <div
-          class="AppForm__Field"
-          :class="{
-            '-valid': validations.price,
-            '-invalid': !validations.price
-          }"
-        >
-          <label class="AppForm__Label">When Bitcoin price is</label>
-          <div class="AppForm__Inputs">
+      <div
+        class="AppForm__Field"
+        :class="{
+          '-valid': validations.price,
+          '-invalid': !validations.price
+        }"
+      >
+        <label class="AppForm__Label">When Bitcoin price is</label>
+        <div class="AppForm__Inputs">
+          <div class="AppForm__InputWrap -select">
             <select
-              class="AppForm__Input"
+              class="AppForm__Input -select"
               v-model="user.dir"
             >
-              <option value="GT">Greater than</option>
-              <option value="LT">Less than</option>
+              <option value="GT">When more than</option>
+              <option value="LT">When less than</option>
             </select>
+          </div>
+          <div class="AppForm__InputWrap">
             <input
               class="AppForm__Input"
               type="tel"
@@ -59,14 +63,15 @@
             >
           </div>
         </div>
+      </div>
 
-        <div class="AppForm__Submit">
-          <Btn :disabled="!isValid">Confirm</Btn>
-          <div class="AppForm__SubmitInfo">We won't share your details</div>
-        </div>
+      <div class="AppForm__Submit">
+        <Btn :disabled="!isValid">Confirm</Btn>
+      </div>
 
-      </form>
-    </template>
+      <footer class="AppForm__Info">We won't share your details</footer>
+
+    </form>
   </div>
 </template>
 
@@ -76,6 +81,7 @@ import { parse } from 'libphonenumber-js'
 
 import Btn from '@/components/Btn'
 import Loading from '@/components/Loading'
+import User from '@/models/User'
 
 export default {
   components: {
@@ -85,26 +91,16 @@ export default {
 
   data () {
     return {
-      submitted: false,
       submitting: false,
       loading: true,
-
-      user: {
-        created: new Date(),
-        notified: null,
-
-        price: null,
-        dir: 'GT',
-        phoneCountryCode: '+1',
-        phoneNumber: null
-      }
+      error: false,
+      user: new User()
     }
   },
 
   computed: {
     validations () {
       const { user } = this
-
       return {
         price: !isNaN(user.price) && Number(user.price) > 0,
         phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
@@ -117,11 +113,19 @@ export default {
   },
 
   methods: {
+    addAnother () {
+      this.user.dir = 'GT'
+      this.user.price = null
+    },
+
     async submit () {
       this.submitting = true
+      this.error = false
       try {
         await this.$store.dispatch('addUser', this.user)
-        this.submitted = true
+        this.$store.dispatch('wasSubmitted')
+      } catch (err) {
+        this.error = 'There was a problem submitting form'
       } finally {
         this.submitting = false
       }
@@ -142,24 +146,18 @@ export default {
   &__Label
     display: block
     margin-bottom: spacingSmall
-    font-weight: 500
+    caps()
+    display: none
 
   &__Field
     margin: 0 0 spacingBase
     align-items: center
 
-  &__Submitted
+  &__Error
+    color: colorError
+    margin-bottom: spacingBase
     text-align: center
-
-    &Icon
-      width: 3rem
-      height: 3rem
-      fill: currentColor
-
-    &Message
-      display: block
-      text-transform: uppercase
-      font-weight: 600
+    font-weight: 600
 
   &__Inputs
     display: flex
@@ -189,47 +187,56 @@ export default {
         opacity: 1
         background-image: embedurl("../assets/check.svg", "utf8")
 
-    /*
-    .-invalid &
-      color: #D0021B
-
-      &::after
-        opacity: 1
-        background-image: embedurl("../assets/remove.svg", "utf8")
-    */
-
-  &__Input + &__Input
+  &__InputWrap + &__InputWrap
     border-left: currentColor solid 1px
 
+
+
+  &__InputWrap
+    flex: 50%
+    position: relative
+
+    &.-select
+      cursor: pointer
+
+      &::after
+        content: ""
+        border-top: 5px currentColor solid
+        border-left: 5px transparent solid
+        border-right: 5px transparent solid
+        width: 0
+        height: 0
+        right: 1rem
+        top: 50%
+        transform: translate(0, -50%)
+        position: absolute
+
   &__Input
-    padding: spacingSmall
+    padding: 1rem
     border: 0
     background: transparent
+    -moz-appearance: none
     -webkit-appearance: none
     box-sizing: border-box
     transition: transitionBase
-
-    select&
-      width: 8rem
-
-    input&
-      flex: 1
+    width: 100%
 
     &::placeholder
       color: currentColor
       opacity: .7
 
-    &:focus
+    &:focus,
+    &:hover
       outline: 0
       background: rgba(colorPrimary, .1)
 
   &__Submit
-    display: flex
-    align-items: center
-    margin-top: 2rem
+    margin-top: spacingLarge
+    margin-bottom: spacingLarge
+    text-align: center
 
-    &Info
-      margin-left: spacingBase
-      font-size: 87.5%
-      opacity: .7
+  &__Info
+    font-size: 87.5%
+    opacity: .7
+    text-align: center
 </style>

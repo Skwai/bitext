@@ -2,20 +2,28 @@
   <div id="App">
     <AppHeader />
     <Price />
-    <AppForm />
+    <Submitted v-if="submitted" />
+    <AppForm v-else />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AppHeader from '@/components/AppHeader'
 import AppForm from '@/components/AppForm'
 import Price from '@/components/Price'
+import Submitted from '@/components/Submitted'
 
 export default {
   components: {
     AppHeader,
     AppForm,
-    Price
+    Price,
+    Submitted
+  },
+
+  computed: {
+    ...mapGetters(['submitted'])
   }
 }
 </script>

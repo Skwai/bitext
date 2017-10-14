@@ -14,13 +14,14 @@ export default {
 .Btn
   border: 0
   background: transparent
-  padding: 0.75rem 2rem
   background: colorPrimary
   color: #fff
+  padding: 1rem 2rem
   border-radius: borderRadiusBase
+  caps()
   cursor: pointer
   transition: 0.2s
-  caps()
+  width: 100%
 
   &[disabled]
     cursor: not-allowed
