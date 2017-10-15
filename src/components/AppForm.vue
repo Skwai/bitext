@@ -83,6 +83,7 @@ export default {
 
   data () {
     return {
+      loading: true,
       submitting: false,
       error: false,
       user: new User()
