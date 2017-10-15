@@ -33,13 +33,13 @@ export default {
 @require "./styles/config.styl"
 
 html
-  font-size: fontSizeRoot - 2px
+  font-size: (fontSizeRoot - 2px)
 
   @media (min-width: 768px)
-    font-size: fontSizeBase - 1px
+    font-size: (fontSizeRoot - 1px)
 
   @media (min-width: 1024px)
-    font-size: fontSizeBase
+    font-size: (fontSizeRoot)
 
 body
   padding: spacingBase
