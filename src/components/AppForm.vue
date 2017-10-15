@@ -84,7 +84,6 @@ export default {
   data () {
     return {
       submitting: false,
-      loading: true,
       error: false,
       user: new User()
     }

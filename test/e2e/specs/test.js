@@ -2,16 +2,12 @@
 // http://nightwatchjs.org/guide#usage
 
 module.exports = {
-  'Test form workflow': function (browser) {
-    // automatically uses dev Server port from /config.index.js
-    // default: http://localhost:8080
-    // see nightwatch.conf.js
+  'Test form workflow': (browser) => {
     const server = browser.globals.devServerURL
 
     browser
       .url(server)
       .waitForElementVisible('#App', 5000)
-      .assert.elementPresent('.AppHeader')
       .waitForElementVisible('.AppForm', 5000)
       .setValue('#AppForm__CountryCode', '+61')
       .setValue('#AppForm__PhoneNumber', '412345678')
