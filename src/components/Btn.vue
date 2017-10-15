@@ -24,11 +24,12 @@ export default {
   border-radius: borderRadiusBase
   caps()
   cursor: pointer
-  transition: 0.2s
+  transition: transitionBase
   width: 100%
 
   &[disabled]
     cursor: not-allowed
+    background: rgba(colorPrimary, .5)
     color: rgba(255,255,255,.7)
 
   &:hover,

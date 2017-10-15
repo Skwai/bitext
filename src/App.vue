@@ -33,35 +33,33 @@ export default {
 @require "./styles/config.styl"
 
 html
-  font-size: fontSizeMobile
+  font-size: fontSizeRoot - 2px
 
   @media (min-width: 768px)
-    font-size: fontSizeTablet
+    font-size: fontSizeBase - 1px
 
   @media (min-width: 1024px)
-    font-size: fontSizeDesktop
-
-  @media (min-width: 1280px)
     font-size: fontSizeBase
 
 body
   padding: spacingBase
   font-family: fontFamilyBase
+  color: colorPrimary
+
+body,
+button,
+input,
+textarea,
+select
   line-height: lineHeightBase
-  color: colorFont
+  font-size: 1rem
 
 button,
 input,
 textarea,
 select
-  font-size: 1rem
-  line-height: lineHeightBase
   font-family: inherit
   color: inherit
-
-h1
-  margin-bottom: spacingBase
-  text-align: center
 
 *
   box-sizing: border-box
