@@ -87,6 +87,7 @@ const sendUserMessage = (user, message) => {
   const phoneNumber = getUserPhoneNumber(userData)
   return sendMessage(phoneNumber, message)
     .then(() => setUserNotified(user))
+    .catch((err) => console.error(err))
 }
 
 /**

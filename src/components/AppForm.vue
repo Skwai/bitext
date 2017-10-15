@@ -3,7 +3,7 @@
   <form v-else @submit.prevent="submit" class="AppForm">
     <div class="AppForm__Error" v-if="error">{{error}}</div>
 
-    <p class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
+    <div class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
       <div class="AppForm__Inputs">
         <label class="AppForm__InputWrap -select">
           <span class="AppForm__Label">Country Phone Code</span>
@@ -30,10 +30,9 @@
           >
         </label>
       </div>
-    </p>
+    </div>
 
-    <p class="AppForm__Field" :class="{ '-valid': validations.price }">
-      <label class="AppForm__Label">When Bitcoin price is</label>
+    <div class="AppForm__Field" :class="{ '-valid': validations.price }">
       <div class="AppForm__Inputs">
         <label class="AppForm__InputWrap -select">
           <span class="AppForm__Label">When price is</span>
@@ -57,11 +56,11 @@
           >
         </label>
       </div>
-    </p>
+    </div>
 
-    <p class="AppForm__Submit">
+    <div class="AppForm__Submit">
       <Btn :disabled="!isValid">Confirm</Btn>
-    </p>
+    </div>
 
     <footer class="AppForm__Info">We won't share your details</footer>
   </form>
@@ -98,10 +97,17 @@ export default {
         phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
       }
     },
+
     isValid () {
       return Object.values(this.validations).every(v => v)
     },
+
     ...mapGetters(['countries'])
+  },
+
+  async created () {
+    await this.$store.dispatch('getCountries')
+    this.loading = false
   },
 
   methods: {
@@ -109,6 +115,7 @@ export default {
       this.user.dir = 'GT'
       this.user.price = null
     },
+
     async submit () {
       this.submitting = true
       this.error = false
@@ -121,11 +128,6 @@ export default {
         this.submitting = false
       }
     }
-  },
-
-  async created () {
-    await this.$store.dispatch('getCountries')
-    this.loading = false
   }
 }
 </script>
