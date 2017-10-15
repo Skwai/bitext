@@ -1,3 +1,3 @@
-const notify = require('./lib/notify')
+const notify = require('./notify')
 
 exports.notify = notify
