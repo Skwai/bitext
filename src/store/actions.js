@@ -3,14 +3,14 @@ import * as types from '@/store/types'
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
-export const addUser = async (ctx, user) => {
+export const addUser = async (_, user) => {
   const data = { ...user }
   await db.collection('users').add(data)
 }
 
 export const getCountries = async ({ state, commit }) => {
   if (!Object.keys(state.countries).length) {
-    const snapshot = await db.collection('countries').get()
+    const snapshot = await db.collection('countries').orderBy('abbreviation', 'desc').get()
     snapshot.forEach(doc => commit(types.ADD_COUNTRY, doc))
   }
 }

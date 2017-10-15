@@ -1,22 +1,16 @@
 <template>
   <Loading v-if="loading || submitting" />
   <form v-else @submit.prevent="submit" class="AppForm">
-
     <div class="AppForm__Error" v-if="error">{{error}}</div>
 
-    <p
-      class="AppForm__Field"
-      :class="{
-        '-valid': validations.phoneNumber,
-        '-invalid': !validations.phoneNumber
-      }"
-    >
+    <p class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
       <div class="AppForm__Inputs">
         <label class="AppForm__InputWrap -select">
           <span class="AppForm__Label">Country Phone Code</span>
           <select
             class="AppForm__Input"
             v-model="user.phoneCountryCode"
+            id="AppForm__CountryCode"
           >
             <option
               v-for="(country, id) in countries"
@@ -28,6 +22,7 @@
         <label class="AppForm__InputWrap">
           <span class="AppForm__Label">Mobile Number</span>
           <input
+            id="AppForm__PhoneNumber"
             class="AppForm__Input"
             type="tel"
             v-model="user.phoneNumber"
@@ -37,18 +32,13 @@
       </div>
     </p>
 
-    <p
-      class="AppForm__Field"
-      :class="{
-        '-valid': validations.price,
-        '-invalid': !validations.price
-      }"
-    >
+    <p class="AppForm__Field" :class="{ '-valid': validations.price }">
       <label class="AppForm__Label">When Bitcoin price is</label>
       <div class="AppForm__Inputs">
         <label class="AppForm__InputWrap -select">
           <span class="AppForm__Label">When price is</span>
           <select
+            id="AppForm__Dir"
             class="AppForm__Input -select"
             v-model="user.dir"
           >
@@ -59,6 +49,7 @@
         <label class="AppForm__InputWrap">
           <span class="AppForm__Label">Price (USD)</span>
           <input
+            id="AppForm__Price"
             class="AppForm__Input"
             type="tel"
             v-model.number="user.price"
@@ -73,7 +64,6 @@
     </p>
 
     <footer class="AppForm__Info">We won't share your details</footer>
-
   </form>
 </template>
 
@@ -94,7 +84,6 @@ export default {
   data () {
     return {
       submitting: false,
-      loading: true,
       error: false,
       user: new User()
     }
@@ -119,7 +108,6 @@ export default {
       this.user.dir = 'GT'
       this.user.price = null
     },
-
     async submit () {
       this.submitting = true
       this.error = false
@@ -189,8 +177,6 @@ export default {
   &__InputWrap + &__InputWrap
     border-left: currentColor solid 1px
 
-
-
   &__InputWrap
     flex: 50%
     position: relative
@@ -219,6 +205,7 @@ export default {
     box-sizing: border-box
     transition: transitionBase
     width: 100%
+    border-radius: 0 // iOS
 
     &::placeholder
       color: currentColor
