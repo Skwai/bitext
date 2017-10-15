@@ -37,14 +37,18 @@ export default {
     font-size: 1.25rem
 
   &__Reset
-    background: transparent
     border: 0
     padding: 0.25rem 0
     caps()
     cursor: pointer
-    opacity: .5
+    border-radius: borderRadiusBase
+    background: transparent
+    border: currentColor solid 1px
+    padding: 1rem 2rem
+    transition: transitionBase
 
     &:hover,
     &:focus
-      opacity: 1
+      color: colorPrimary
+      background: rgba(colorPrimary, 0.1)
 </style>

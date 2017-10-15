@@ -17,7 +17,6 @@ export default {
 
 .Btn
   border: 0
-  background: transparent
   background: colorPrimary
   color: #fff
   padding: 1rem 2rem

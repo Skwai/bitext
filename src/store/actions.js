@@ -8,13 +8,6 @@ export const addUser = async (_, user) => {
   await db.collection('users').add(data)
 }
 
-export const getCountries = async ({ state, commit }) => {
-  if (!Object.keys(state.countries).length) {
-    const snapshot = await db.collection('countries').orderBy('abbreviation', 'desc').get()
-    snapshot.forEach(doc => commit(types.ADD_COUNTRY, doc))
-  }
-}
-
 export const wasSubmitted = ({ commit }) => {
   commit(types.SET_SUBMITTED)
 }

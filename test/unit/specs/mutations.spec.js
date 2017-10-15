@@ -2,22 +2,7 @@ import { expect } from 'chai'
 import mutations from '@/store/mutations'
 import * as types from '@/store/types'
 
-import { country } from '../mocks'
-
 describe('mutations.js', () => {
-  describe(types.ADD_COUNTRY, () => {
-    it('Adds a country object to the state', () => {
-      const state = { countries: {} }
-      const doc = {
-        id: 'country1',
-        data: () => country
-      }
-      mutations[types.ADD_COUNTRY](state, doc)
-      expect(state.countries).to.have.own.property(doc.id)
-      expect(state.countries[doc.id]).to.deep.equal(country)
-    })
-  })
-
   describe(types.SET_BTC_PRICE, () => {
     it('Adds updates the btcPrice in the store', () => {
       const state = { btcPrice: null }

@@ -1,10 +1,4 @@
 /**
- * Get the countries in the store
- * @return {Object}
- */
-export const countries = ({ countries }) => countries
-
-/**
  * Get the Bitcoin price in dollars
  * @return {(Number|null)}
  */

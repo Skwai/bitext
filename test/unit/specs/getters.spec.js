@@ -1,21 +1,7 @@
 import { expect } from 'chai'
-import { countries, btcPriceDollars, submitted } from '@/store/getters'
-import { country } from '../mocks'
-
-const state = {
-  countries: {
-    country1: country
-  },
-  btcPrice: 100.23
-}
+import { btcPriceDollars, submitted } from '@/store/getters'
 
 describe('getters.js', () => {
-  describe('countries()', () => {
-    it('returns an object of countries in the store', () => {
-      expect(countries(state)).to.deep.equal(state.countries)
-    })
-  })
-
   describe('btcPriceDollars()', () => {
     it('returns the bitcoin price in the store', () => {
       // would test comma seperated formatting but PhantomJS doesn't
