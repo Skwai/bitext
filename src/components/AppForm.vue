@@ -1,6 +1,5 @@
 <template>
-  <Loading v-if="loading || submitting" />
-  <form v-else @submit.prevent="submit" class="AppForm">
+  <form @submit.prevent="submit" class="AppForm">
     <div class="AppForm__Error" v-if="error">{{error}}</div>
 
     <div class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
@@ -15,8 +14,8 @@
             <option
               v-for="(country, id) in countries"
               :key="id"
-              :value="country.phoneCountryCode"
-            >{{country.phoneCountryCode}} ({{country.abbreviation}})</option>
+              :value="country.phoneCode"
+            >{{country.phoneCode}} ({{country.name}})</option>
           </select>
         </label>
         <label class="AppForm__InputWrap">
@@ -67,12 +66,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { parse } from 'libphonenumber-js'
 
 import Btn from '@/components/Btn'
 import Loading from '@/components/Loading'
 import User from '@/models/User'
+import countries from '@/data/countries'
 
 export default {
   components: {
@@ -82,7 +81,6 @@ export default {
 
   data () {
     return {
-      loading: true,
       submitting: false,
       error: false,
       user: new User()
@@ -90,6 +88,8 @@ export default {
   },
 
   computed: {
+    countries: () => countries,
+
     validations () {
       const { user } = this
       return {
@@ -100,14 +100,7 @@ export default {
 
     isValid () {
       return Object.values(this.validations).every(v => v)
-    },
-
-    ...mapGetters(['countries'])
-  },
-
-  async created () {
-    await this.$store.dispatch('getCountries')
-    this.loading = false
+    }
   },
 
   methods: {
