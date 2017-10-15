@@ -12,7 +12,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "yarn run unit && yarn run e2e",
     "deploy": "yarn build && firebase deploy",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs, functions"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs, functions",
+    "config": "firebase functions:config:get > functions/.runtimeconfig.json"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
