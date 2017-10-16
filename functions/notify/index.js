@@ -5,6 +5,7 @@ const Twilio = require('twilio')
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
+
 // Init Twilio
 const client = new Twilio(
   functions.config().twilio.accountsid,
@@ -14,6 +15,12 @@ const client = new Twilio(
 // Init Firebase
 admin.initializeApp(functions.config().firebase)
 const db = admin.firestore()
+
+/**
+ * @param {String} price
+ * @return {String}
+ */
+const getMessage = (price) => `Hi. Bitcoin is now at ${price} USD. This is a one-time alert`
 
 /**
  * Get the current Bitcoin price
@@ -123,7 +130,7 @@ module.exports = functions.https.onRequest((req, res) => {
   getPrice().then((price) => {
     const formattedPrice = formatPrice(price)
     console.log(`Fetched price: ${formattedPrice}`)
-    const message = `Hi. Bitcoin is at ${formattedPrice}. This is a one-time notification`
+    const message = getMessage(formattedPrice)
 
     getUsers(price).then((users) => {
       console.log(`Messaging users: ${users.length}`)
