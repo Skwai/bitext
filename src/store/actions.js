@@ -1,7 +1,6 @@
 import db from '@/services/firestore'
 import * as types from '@/store/types'
-
-const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
+import getPrice from '@/services/price'
 
 export const addUser = async (_, user) => {
   const data = { ...user }
@@ -18,16 +17,7 @@ export const resetSubmitted = ({ commit }) => {
 
 export const getBtcPrice = async ({ commit }) => {
   try {
-    const response = await fetch(COINDESK_API_URL, {
-      mode: 'cors',
-      headers: {
-        Accept: 'application/json'
-      }
-    })
-    const data = await response.json()
-    const price = data.bpi.USD.rate_float
+    const price = await getPrice()
     commit(types.SET_BTC_PRICE, price)
-  } catch (err) {
-    console.error(err)
-  }
+  } catch (err) {}
 }

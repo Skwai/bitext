@@ -2,10 +2,7 @@
  * Get the Bitcoin price in dollars
  * @return {(Number|null)}
  */
-export const btcPriceDollars = ({ btcPrice }) => {
-  if (!btcPrice || isNaN(btcPrice)) return null
-  return Number(Number(btcPrice).toFixed(0)).toLocaleString('en-US')
-}
+export const btcPrice = ({ btcPrice }) => btcPrice || null
 
 /**
  * Get the submitted state in the store

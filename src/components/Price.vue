@@ -2,8 +2,8 @@
   <div class="Price">
     <div class="Price__Label">Current Price (USD)</div>
     <Loading v-if="loading" />
-    <h2 v-else-if="btcPriceDollars" class="Price__Value">
-      <small class="Price__Symbol">$</small><span class="Price__Dollars">{{btcPriceDollars}}</span>
+    <h2 v-else-if="btcPrice" class="Price__Value">
+      <small class="Price__Symbol">$</small><span class="Price__Dollars">{{price.dollars}}</span><small class="Price__Cents">.{{price.cents}}</small>
     </h2>
   </div>
 </template>
@@ -20,10 +20,22 @@ export default {
   },
 
   computed: {
-    loading () {
-      return !this.btcPriceDollars
+    price () {
+      const { btcPrice } = this
+      console.log(btcPrice)
+      if (!btcPrice) return {}
+      const [dollars, cents] = Number(btcPrice).toFixed(2).split('.')
+        .map((n) => Number(n).toLocaleString())
+
+      return {
+        dollars,
+        cents: Number(cents) < 10 ? `${cents}0` : cents
+      }
     },
-    ...mapGetters(['btcPriceDollars'])
+    loading () {
+      return !this.btcPrice
+    },
+    ...mapGetters(['btcPrice'])
   },
 
   methods: {
@@ -56,12 +68,19 @@ export default {
 
   &__Value
     font-size: 2rem
+    font-weight: 600
 
   &__Symbol
-    font-weight: 500
-    letter-spacing: 0.05em
-    font-size: 1rem
+  &__Cents
+    font-size: 1.125rem
     vertical-align: baseline
-    transform: translateY(-0.65rem)
+    transform: translateY(-0.45em)
     display: inline-block
+    opacity: .7
+
+  &__Symbol
+    margin-right: 2px
+
+  &__Cents
+    margin-left: 2px
 </style>

@@ -1,18 +1,10 @@
 import { expect } from 'chai'
-import { btcPriceDollars, submitted } from '@/store/getters'
+import { btcPrice, submitted } from '@/store/getters'
 
 describe('getters.js', () => {
-  describe('btcPriceDollars()', () => {
+  describe('btcPrice', () => {
     it('returns the bitcoin price in the store', () => {
-      // would test comma seperated formatting but PhantomJS doesn't
-      // support i18n for toLocaleString to work
-      const tests = {
-        '123': 123.45,
-        '321': 321.00
-      }
-      Object.entries(tests).forEach(([str, num]) => {
-        expect(btcPriceDollars({ btcPrice: num })).to.equal(str)
-      })
+      expect(btcPrice({ btcPrice: 100 })).to.equal(100)
     })
   })
 
