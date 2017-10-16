@@ -18,7 +18,9 @@ describe('AppForm.vue', () => {
 
   it('Should be disabled by default', async () => {
     const vm = await render()
-    expect(vm.$el.querySelector('button[type=submit]').getAttribute('disabled')).to.equal('disabled')
+    expect(vm.$el.querySelector('button[type=submit]')
+      .getAttribute('disabled'))
+      .to.equal('disabled')
   })
 
   it('Should not be disabled if form is valid', async () => {
@@ -30,6 +32,8 @@ describe('AppForm.vue', () => {
       dir: 'LT'
     })
     await Vue.nextTick()
-    expect(vm.$el.querySelector('button[type=submit]').getAttribute('disabled')).to.be.null
+    expect(vm.$el.querySelector('button[type=submit]')
+      .getAttribute('disabled'))
+      .to.be.null
   })
 })

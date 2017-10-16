@@ -16,7 +16,7 @@
   },
   {
      "name":"American Samoa",
-     "phoneCode":"+1 684",
+     "phoneCode":"+1684",
      "code":"AS"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
      "name":"Anguilla",
-     "phoneCode":"+1 264",
+     "phoneCode":"+1264",
      "code":"AI"
   },
   {
@@ -71,7 +71,7 @@
   },
   {
      "name":"Bahamas",
-     "phoneCode":"+1 242",
+     "phoneCode":"+1242",
      "code":"BS"
   },
   {
@@ -86,7 +86,7 @@
   },
   {
      "name":"Barbados",
-     "phoneCode":"+1 246",
+     "phoneCode":"+1246",
      "code":"BB"
   },
   {
@@ -111,7 +111,7 @@
   },
   {
      "name":"Bermuda",
-     "phoneCode":"+1 441",
+     "phoneCode":"+1441",
      "code":"BM"
   },
   {
@@ -176,7 +176,7 @@
   },
   {
      "name":"Cayman Islands",
-     "phoneCode":"+ 345",
+     "phoneCode":"+345",
      "code":"KY"
   },
   {
@@ -261,12 +261,12 @@
   },
   {
      "name":"Dominica",
-     "phoneCode":"+1 767",
+     "phoneCode":"+1767",
      "code":"DM"
   },
   {
      "name":"Dominican Republic",
-     "phoneCode":"+1 849",
+     "phoneCode":"+1849",
      "code":"DO"
   },
   {
@@ -376,7 +376,7 @@
   },
   {
      "name":"Grenada",
-     "phoneCode":"+1 473",
+     "phoneCode":"+1473",
      "code":"GD"
   },
   {
@@ -386,7 +386,7 @@
   },
   {
      "name":"Guam",
-     "phoneCode":"+1 671",
+     "phoneCode":"+1671",
      "code":"GU"
   },
   {
@@ -461,7 +461,7 @@
   },
   {
      "name":"Jamaica",
-     "phoneCode":"+1 876",
+     "phoneCode":"+1876",
      "code":"JM"
   },
   {
@@ -686,7 +686,7 @@
   },
   {
      "name":"Northern Mariana Islands",
-     "phoneCode":"+1 670",
+     "phoneCode":"+1670",
      "code":"MP"
   },
   {
@@ -746,7 +746,7 @@
   },
   {
      "name":"Puerto Rico",
-     "phoneCode":"+1 939",
+     "phoneCode":"+1939",
      "code":"PR"
   },
   {
@@ -891,7 +891,7 @@
   },
   {
      "name":"Trinidad and Tobago",
-     "phoneCode":"+1 868",
+     "phoneCode":"+1868",
      "code":"TT"
   },
   {
@@ -911,7 +911,7 @@
   },
   {
      "name":"Turks and Caicos Islands",
-     "phoneCode":"+1 649",
+     "phoneCode":"+1649",
      "code":"TC"
   },
   {
@@ -978,16 +978,6 @@
      "name":"Zimbabwe",
      "phoneCode":"+263",
      "code":"ZW"
-  },
-  {
-     "name":"land Islands",
-     "phoneCode":"",
-     "code":"AX"
-  },
-  {
-     "name":"Antarctica",
-     "phoneCode":null,
-     "code":"AQ"
   },
   {
      "name":"Bolivia, Plurinational State of",
@@ -1126,12 +1116,12 @@
   },
   {
      "name":"Saint Kitts and Nevis",
-     "phoneCode":"+1 869",
+     "phoneCode":"+1869",
      "code":"KN"
   },
   {
      "name":"Saint Lucia",
-     "phoneCode":"+1 758",
+     "phoneCode":"+1758",
      "code":"LC"
   },
   {
@@ -1146,7 +1136,7 @@
   },
   {
      "name":"Saint Vincent and the Grenadines",
-     "phoneCode":"+1 784",
+     "phoneCode":"+1784",
      "code":"VC"
   },
   {
@@ -1196,12 +1186,12 @@
   },
   {
      "name":"Virgin Islands, British",
-     "phoneCode":"+1 284",
+     "phoneCode":"+1284",
      "code":"VG"
   },
   {
      "name":"Virgin Islands, U.S.",
-     "phoneCode":"+1 340",
+     "phoneCode":"+1340",
      "code":"VI"
   }
 ]

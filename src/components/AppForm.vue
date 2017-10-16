@@ -88,7 +88,11 @@ export default {
   },
 
   computed: {
-    countries: () => countries,
+    countries: () => {
+      return countries.sort((a, b) => {
+        return a.phoneCode < b.phoneCode ? -1 : 1
+      })
+    },
 
     validations () {
       const { user } = this
