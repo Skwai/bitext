@@ -22,9 +22,9 @@ export default {
   computed: {
     price () {
       const { btcPrice } = this
-      console.log(btcPrice)
-      if (!btcPrice) return {}
-      const [dollars, cents] = Number(btcPrice).toFixed(2).split('.')
+      const [dollars, cents] = Number(btcPrice)
+        .toFixed(2)
+        .split('.')
         .map((n) => Number(n).toLocaleString())
 
       return {
