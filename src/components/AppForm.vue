@@ -1,5 +1,6 @@
 <template>
-  <form @submit.prevent="submit" class="AppForm">
+  <Loading v-if="submitting" />
+  <form v-else @submit.prevent="submit" class="AppForm">
     <div class="AppForm__Error" v-if="error">{{error}}</div>
 
     <div class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
