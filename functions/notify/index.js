@@ -41,9 +41,7 @@ const getUsers = (price) => {
   return Promise.all([
     getHighUsers(price),
     getLowUsers(price)
-  ]).then(([high, low]) => {
-    return [].concat(high.docs).concat(low.docs)
-  })
+  ]).then(([high, low]) => [].concat(high.docs || []).concat(low.docs || []))
 }
 
 /**

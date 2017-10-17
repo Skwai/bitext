@@ -49,6 +49,7 @@ export default {
 
     &:hover,
     &:focus
+      outline: 0
       color: colorPrimary
       background: rgba(colorPrimary, 0.1)
 </style>

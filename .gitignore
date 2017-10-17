@@ -19,3 +19,4 @@ firebase-debug.log
 *.ntvs*
 *.njsproj
 *.sln
+*.vscode
