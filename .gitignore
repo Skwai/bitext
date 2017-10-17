@@ -11,7 +11,6 @@ functions/.runtimeconfig.json
 
 # Firebase
 firebase-debug.log
-.firebaserc
 
 # Editor directories and files
 .idea
