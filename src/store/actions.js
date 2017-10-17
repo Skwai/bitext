@@ -1,6 +1,6 @@
 import db from '@/services/firestore'
 import * as types from '@/store/types'
-import getPrice from '@/services/price'
+import * as price from '@/services/price'
 
 export const addUser = async (_, user) => {
   const data = { ...user }
@@ -17,7 +17,7 @@ export const resetSubmitted = ({ commit }) => {
 
 export const getBtcPrice = async ({ commit }) => {
   try {
-    const price = await getPrice()
-    commit(types.SET_BTC_PRICE, price)
+    const p = await price.getPrice()
+    commit(types.SET_BTC_PRICE, p)
   } catch (err) {}
 }

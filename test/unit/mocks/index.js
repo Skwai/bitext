@@ -16,7 +16,7 @@ export const store = (state = {}) => {
     getters,
     mutations,
     state: Object.assign({
-      btcPrice: 100,
+      btcPrice: 100.25,
       submitted: false
     }, state),
     strict: false
