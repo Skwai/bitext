@@ -3,8 +3,5 @@ service cloud.firestore {
     match /users/{user} {
       allow create;
     }
-    match /countries/{document} {
-      allow read;
-    }
   }
 }
