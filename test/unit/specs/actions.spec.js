@@ -2,16 +2,9 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 import { wasSubmitted, resetSubmitted, getBtcPrice } from '@/store/actions'
 import * as price from '@/services/price'
-import db from '@/services/firestore'
 
 /* eslint-disable no-unused-expressions */
 describe('actions.js', () => {
-  describe('addUser()', () => {
-    it('returns the bitcoin price in the store', () => {
-
-    })
-  })
-
   describe('wasSubmitted()', () => {
     it('sets the submitted state to true', () => {
       const context = {

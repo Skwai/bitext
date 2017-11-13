@@ -1,14 +1,17 @@
 <template>
-  <Loading v-if="submitting" />
-  <form v-else @submit.prevent="submit" class="AppForm">
-    <div class="AppForm__Error" v-if="error">{{error}}</div>
+  <AppLoading v-if="submitting" />
+  <form v-else @submit.prevent="submit" :class="$style.AppForm">
+    <div :class="$style.AppForm__Error" v-if="error">{{error}}</div>
 
-    <div class="AppForm__Field" :class="{ '-valid': validations.phoneNumber }">
-      <div class="AppForm__Inputs">
-        <label class="AppForm__InputWrap -select">
-          <span class="AppForm__Label">Country Phone Code</span>
+    <div :class="{
+      [$style.AppForm__Field]: true,
+      [$style.AppForm__FieldValid]: validations.phoneNumber
+    }">
+      <div :class="$style.AppForm__Inputs">
+        <label :class="[$style.AppForm__InputWrap, $style.AppForm__InputWrapSelect]">
+          <span :class="$style.AppForm__Label">Country Phone Code</span>
           <select
-            class="AppForm__Input"
+            :class="$style.AppForm__Input"
             v-model="user.phoneCountryCode"
             id="AppForm__CountryCode"
           >
@@ -19,11 +22,11 @@
             >{{country.phoneCode}} ({{country.name}})</option>
           </select>
         </label>
-        <label class="AppForm__InputWrap">
-          <span class="AppForm__Label">Mobile Number</span>
+        <label :class="$style.AppForm__InputWrap">
+          <span :class="$style.AppForm__Label">Mobile Number</span>
           <input
             id="AppForm__PhoneNumber"
-            class="AppForm__Input"
+            :class="$style.AppForm__Input"
             type="tel"
             v-model="user.phoneNumber"
             placeholder="Mobile number"
@@ -32,24 +35,27 @@
       </div>
     </div>
 
-    <div class="AppForm__Field" :class="{ '-valid': validations.price }">
-      <div class="AppForm__Inputs">
-        <label class="AppForm__InputWrap -select">
-          <span class="AppForm__Label">When price is</span>
+    <div :class="{
+      [$style.AppForm__Field]: true,
+      [$style.AppForm__FieldValid]: validations.price
+    }">
+      <div :class="$style.AppForm__Inputs">
+        <label :class="[$style.AppForm__InputWrap, $style.AppForm__InputWrapSelect]">
+          <span :class="$style.AppForm__Label">When price is</span>
           <select
+            :class="$style.AppForm__Input"
             id="AppForm__Dir"
-            class="AppForm__Input -select"
             v-model="user.dir"
           >
             <option value="GT">When more than</option>
             <option value="LT">When less than</option>
           </select>
         </label>
-        <label class="AppForm__InputWrap">
-          <span class="AppForm__Label">Price (USD)</span>
+        <label :class="$style.AppForm__InputWrap">
+          <span :class="$style.AppForm__Label">Price (USD)</span>
           <input
             id="AppForm__Price"
-            class="AppForm__Input"
+            :class="$style.AppForm__Input"
             type="tel"
             v-model.number="user.price"
             placeholder="$ USD"
@@ -58,26 +64,25 @@
       </div>
     </div>
 
-    <div class="AppForm__Submit">
-      <Btn :disabled="!isValid">Confirm</Btn>
+    <div :class="$style.AppForm__Submit">
+      <AppButton :disabled="!isValid">Confirm</AppButton>
     </div>
 
-    <footer class="AppForm__Info">We won't share your details</footer>
+    <footer :class="$style.AppForm__Info">We won't share your details</footer>
   </form>
 </template>
 
 <script>
 import { parse } from 'libphonenumber-js'
-
-import Btn from '@/components/Btn'
-import Loading from '@/components/Loading'
+import AppButton from '@/components/AppButton'
+import AppLoading from '@/components/AppLoading'
 import User from '@/models/User'
 import countries from '@/data/countries'
 
 export default {
   components: {
-    Btn,
-    Loading
+    AppButton,
+    AppLoading
   },
 
   data () {
@@ -130,7 +135,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" module>
 @require "../styles/config"
 
 .AppForm
@@ -140,6 +145,13 @@ export default {
   &__Field
     margin: 0 0 spacingBase
     align-items: center
+
+  &__FieldValid &__Inputs
+    color: colorPrimary
+
+    &::after
+      opacity: 1
+      background-image: embedurl("../assets/check.svg", "utf8")
 
   &__Error
     color: colorError
@@ -167,14 +179,6 @@ export default {
       background-position: center center
       background-repeat: no-repeat
 
-
-    .-valid &
-      color: colorPrimary
-
-      &::after
-        opacity: 1
-        background-image: embedurl("../assets/check.svg", "utf8")
-
   &__InputWrap + &__InputWrap
     border-left: currentColor solid 1px
 
@@ -182,7 +186,7 @@ export default {
     flex: 50%
     position: relative
 
-    &.-select
+    &Select
       cursor: pointer
 
       &::after
