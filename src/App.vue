@@ -1,25 +1,25 @@
 <template>
   <main id="App">
     <AppHeader />
-    <Price />
-    <Submitted v-if="submitted" />
-    <AppForm v-else />
+    <ThePrice />
+    <TheSubmitted v-if="submitted" />
+    <TheForm v-else />
   </main>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import AppHeader from '@/components/AppHeader'
-import AppForm from '@/components/AppForm'
-import Price from '@/components/Price'
-import Submitted from '@/components/Submitted'
+import TheForm from '@/components/TheForm'
+import TheHeader from '@/components/TheHeader'
+import ThePrice from '@/components/ThePrice'
+import TheSubmitted from '@/components/TheSubmitted'
 
 export default {
   components: {
-    AppHeader,
-    AppForm,
-    Price,
-    Submitted
+    TheForm,
+    TheHeader,
+    ThePrice,
+    TheSubmitted
   },
 
   computed: {

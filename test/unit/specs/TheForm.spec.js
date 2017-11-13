@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import { store } from '../mocks'
-import AppForm from '@/components/AppForm'
+import TheForm from '@/components/TheForm'
 
 const render = async () => {
-  const vm = new Vue({ store, ...AppForm }).$mount()
+  const vm = new Vue({ store, ...TheForm }).$mount()
   await Vue.nextTick()
   return vm
 }
 
 /* eslint-disable no-unused-expressions */
-describe('AppForm.vue', () => {
+describe('TheForm.vue', () => {
   it('Should render form when loaded', async () => {
     const vm = await render()
     expect(vm.$el).to.exist

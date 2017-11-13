@@ -1,22 +1,22 @@
 <template>
-  <div class="Price">
-    <div class="Price__Label">Current Price (USD)</div>
-    <Loading v-if="loading" />
-    <h2 v-else-if="btcPrice" class="Price__Value">
-      <small class="Price__Symbol">$</small><span class="Price__Dollars">{{price.dollars}}</span><small class="Price__Cents">.{{price.cents}}</small>
+  <div :class="$style.ThePrice">
+    <div :class="$style.ThePrice__Label">Current Price (USD)</div>
+    <AppLoading v-if="loading" />
+    <h2 v-else-if="btcPrice" :class="$style.ThePrice__Value">
+      <small :class="$style.ThePrice__Symbol">$</small><span :class="$style.ThePrice__Dollars">{{price.dollars}}</span><small :class="$style.ThePrice__Cents">.{{price.cents}}</small>
     </h2>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import Loading from '@/components/Loading'
+import AppLoading from '@/components/AppLoading'
 
 const UPDATE_INTERVAL = 30 * 1000 // ms
 
 export default {
   components: {
-    Loading
+    AppLoading
   },
 
   computed: {
@@ -51,10 +51,10 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" module>
 @require "../styles/config.styl"
 
-.Price
+.ThePrice
   margin-bottom: spacingLarge
   text-align: center
   padding: spacingBase

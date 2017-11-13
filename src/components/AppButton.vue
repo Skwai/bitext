@@ -1,7 +1,7 @@
 <template>
   <button
     type="submit"
-    class="Btn"
+    :class="$style.AppButton"
     :disabled="!!disabled"
   ><slot /></button>
 </template>
@@ -12,10 +12,10 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" module>
 @require "../styles/config.styl"
 
-.Btn
+.AppButton
   border: 0
   background: colorPrimary
   color: #fff

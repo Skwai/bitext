@@ -1,12 +1,11 @@
 import Vue from 'vue'
-import Loading from '@/components/Loading'
+import TheSubmitted from '@/components/TheSubmitted'
 
 /* eslint-disable no-unused-expressions */
-describe('Loading.vue', () => {
+describe('TheSubmitted.vue', () => {
   it('Should render', async () => {
-    const vm = new Vue(Loading).$mount()
+    const vm = new Vue(TheSubmitted).$mount()
     await Vue.nextTick()
     expect(vm.$el instanceof Node).to.be.true
-    expect(vm.$el.classList.contains('Loading')).to.be.true
   })
 })
