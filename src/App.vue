@@ -1,6 +1,6 @@
 <template>
   <main id="App">
-    <AppHeader />
+    <TheHeader />
     <ThePrice />
     <TheSubmitted v-if="submitted" />
     <TheForm v-else />

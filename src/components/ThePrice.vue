@@ -1,22 +1,27 @@
 <template>
   <div :class="$style.ThePrice">
-    <div :class="$style.ThePrice__Label">Current Price (USD)</div>
-    <AppLoading v-if="loading" />
-    <h2 v-else-if="btcPrice" :class="$style.ThePrice__Value">
-      <small :class="$style.ThePrice__Symbol">$</small><span :class="$style.ThePrice__Dollars">{{price.dollars}}</span><small :class="$style.ThePrice__Cents">.{{price.cents}}</small>
-    </h2>
+    <div>
+      <div :class="$style.ThePrice__Label">Current Price (USD)</div>
+      <AppLoading v-if="loading" />
+      <h2 v-else-if="btcPrice" :class="$style.ThePrice__Value">
+        <small :class="$style.ThePrice__Symbol">$</small><span :class="$style.ThePrice__Dollars">{{price.dollars}}</span><small :class="$style.ThePrice__Cents">.{{price.cents}}</small>
+      </h2>
+    </div>
+    <ThePriceChart />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import AppLoading from '@/components/AppLoading'
+import ThePriceChart from '@/components/ThePriceChart'
 
 const UPDATE_INTERVAL = 30 * 1000 // ms
 
 export default {
   components: {
-    AppLoading
+    AppLoading,
+    ThePriceChart
   },
 
   computed: {
@@ -61,6 +66,11 @@ export default {
   background: rgba(colorPrimary, 0.1)
   border-radius: borderRadiusBase
   border: currentColor solid 1px
+  position: relative
+  min-height: 10rem
+  display: flex
+  align-items: center
+  justify-content: center
 
   &__Label
     caps()
