@@ -22,7 +22,8 @@
     "firebase": "4.5.0",
     "libphonenumber-js": "^0.4.32",
     "vue": "^2.3.3",
-    "vuex": "^2.4.1"
+    "vuex": "^2.4.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

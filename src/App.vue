@@ -1,5 +1,5 @@
 <template>
-  <main :class="$style.App">
+  <main :class="$style.App" id="App">
     <TheHeader />
     <ThePrice />
     <TheSubmitted v-if="submitted" />
