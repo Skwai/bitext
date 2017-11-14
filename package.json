@@ -17,6 +17,7 @@
     "config": "firebase functions:config:get > functions/.runtimeconfig.json"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "chartist": "^0.11.0",
     "firebase": "4.5.0",
     "libphonenumber-js": "^0.4.32",

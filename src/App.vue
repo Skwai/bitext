@@ -31,6 +31,29 @@ export default {
 <style lang="stylus" module>
 @require "./styles/config.styl"
 
+html
+  font-size: 14px
+
+  @media (min-width: 768px)
+    font-size: 15px
+
+  @media (min-width: 1024px)
+    font-size: 16px
+
+button,
+input,
+textarea,
+select
+  line-height: inherit
+  font-size: inherit
+
+button,
+input,
+textarea,
+select
+  font-family: inherit
+  color: inherit
+
 .App
   width: 28rem
   max-width: 100%
@@ -39,20 +62,6 @@ export default {
   color: colorPrimary
   line-height: lineHeightBase
   font-size: 1rem
-
-  button,
-  input,
-  textarea,
-  select
-    line-height: inherit
-    font-size: inherit
-
-  button,
-  input,
-  textarea,
-  select
-    font-family: inherit
-    color: inherit
 
   *
     box-sizing: border-box
