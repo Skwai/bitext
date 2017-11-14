@@ -16,7 +16,8 @@ export default new Vuex.Store({
   state: {
     countries: {},
     btcPrice: null,
-    submitted: false
+    submitted: false,
+    historicalBtcPrices: {}
   },
   strict: debug
 })

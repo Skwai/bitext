@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.ThePrice">
-    <div>
+    <div :class="$style.ThePrice__Content">
       <div :class="$style.ThePrice__Label">Current Price (USD)</div>
       <AppLoading v-if="loading" />
       <h2 v-else-if="btcPrice" :class="$style.ThePrice__Value">
@@ -63,14 +63,20 @@ export default {
   margin-bottom: spacingLarge
   text-align: center
   padding: spacingBase
-  background: rgba(colorPrimary, 0.1)
+  background: #fff
   border-radius: borderRadiusBase
-  border: currentColor solid 1px
+  border: colorPrimary solid 1px
   position: relative
   min-height: 10rem
   display: flex
   align-items: center
   justify-content: center
+  overflow: hidden
+  color: colorPrimary
+
+  &__Content
+    position: relative
+    z-index: 2
 
   &__Label
     caps()
