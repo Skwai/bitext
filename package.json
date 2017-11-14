@@ -17,14 +17,11 @@
     "config": "firebase functions:config:get > functions/.runtimeconfig.json"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "chartist": "^0.11.0",
     "firebase": "4.5.0",
-    "google-libphonenumber": "^3.0.5",
     "libphonenumber-js": "^0.4.32",
     "vue": "^2.3.3",
-    "vuex": "^2.4.1",
-    "whatwg-fetch": "^2.0.3"
+    "vuex": "^2.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -1,7 +1,6 @@
 const COINDESK_CURRENT_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 const COINDESK_HISTORICAL_URL = 'https://api.coindesk.com/v1/bpi/historical/close.json'
 
-// exporting as non-default so that sinon can stub it in tests
 export const getPrice = async () => {
   const response = await fetch(COINDESK_CURRENT_URL, {
     mode: 'cors',
