@@ -9,3 +9,9 @@ export const btcPrice = ({ btcPrice }) => btcPrice || null
  * @return {Boolean}
  */
 export const submitted = ({ submitted }) => submitted
+
+/**
+ * Get the historical Bitcoin price
+ * @return {Object}
+ */
+export const historicalBtcPrices = ({ historicalBtcPrices }) => historicalBtcPrices

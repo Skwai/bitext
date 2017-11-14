@@ -11,5 +11,9 @@ export default {
 
   [types.SET_UNSUBMITTED] (state) {
     state.submitted = false
+  },
+
+  [types.SET_HISTORICAL_BTC_PRICES] (state, prices) {
+    state.historicalBtcPrices = prices
   }
 }
