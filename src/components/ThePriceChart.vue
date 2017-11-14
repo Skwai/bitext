@@ -65,6 +65,6 @@ export default {
   .ct-line
     stroke: colorPrimary
     stroke-width: 1px
-    stroke-opacity: 1
+    stroke-opacity: .5
     fill: none
 </style>

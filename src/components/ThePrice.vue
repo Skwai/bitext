@@ -85,6 +85,7 @@ export default {
   &__Value
     font-size: 2rem
     font-weight: 600
+    margin: 0
 
   &__Symbol
   &__Cents

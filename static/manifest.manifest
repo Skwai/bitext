@@ -1,0 +1,9 @@
+{
+  "name": "Bitext",
+  "description": "Enter your mobile number and get a one-time SMS notification when Bitcoin reaches a given price",
+  "short_name": "Bitext",
+  "icons": [{
+    "src": "static/icon-152x152.png",
+    "sizes": "192x192"
+  }]
+}

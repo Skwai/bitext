@@ -1,5 +1,5 @@
 <template>
-  <main id="App">
+  <main :class="$style.App">
     <TheHeader />
     <ThePrice />
     <TheSubmitted v-if="submitted" />
@@ -28,43 +28,32 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" module>
 @require "./styles/config.styl"
 
-html
-  font-size: (fontSizeRoot - 2px)
-
-  @media (min-width: 768px)
-    font-size: (fontSizeRoot - 1px)
-
-  @media (min-width: 1024px)
-    font-size: (fontSizeRoot)
-
-body
-  padding: spacingBase
-  font-family: fontFamilyBase
-  color: colorPrimary
-
-body,
-button,
-input,
-textarea,
-select
-  line-height: lineHeightBase
-  font-size: 1rem
-
-button,
-input,
-textarea,
-select
-  font-family: inherit
-  color: inherit
-
-*
-  box-sizing: border-box
-
-#App
+.App
   width: 28rem
   max-width: 100%
   margin: 5vh auto 5vh
+  font-family: fontFamilyBase
+  color: colorPrimary
+  line-height: lineHeightBase
+  font-size: 1rem
+
+  button,
+  input,
+  textarea,
+  select
+    line-height: inherit
+    font-size: inherit
+
+  button,
+  input,
+  textarea,
+  select
+    font-family: inherit
+    color: inherit
+
+  *
+    box-sizing: border-box
 </style>
