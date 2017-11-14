@@ -29,7 +29,6 @@ export default {
 </script>
 
 <style lang="stylus">
-@require "./styles/reset.styl"
 @require "./styles/config.styl"
 
 html
