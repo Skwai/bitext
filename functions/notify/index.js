@@ -4,7 +4,8 @@ const fetch = require('node-fetch')
 const Twilio = require('twilio')
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
-
+const LT = 'LT'
+const GT = 'GT'
 
 // Init Twilio
 const client = new Twilio(
@@ -41,7 +42,7 @@ const getUsers = (price) => {
   return Promise.all([
     getHighUsers(price),
     getLowUsers(price)
-  ]).then(([high, low]) => [].concat(high.docs || []).concat(low.docs || []))
+  ]).then(([high, low]) => [].concat(high.docs || [], low.docs || []))
 }
 
 /**
@@ -51,7 +52,9 @@ const getUsers = (price) => {
  */
 const getHighUsers = (price) => {
   const collection = db.collection('users')
-  return collection.where('notified', '==', null).where('dir', '==', 'GT').where('price', '<=', price).get()
+  return collection.where('notified', '==', null)
+    .where('dir', '==', GT)
+    .where('price', '<=', price).get()
 }
 
 /**
@@ -61,7 +64,9 @@ const getHighUsers = (price) => {
  */
 const getLowUsers = (price) => {
   const collection = db.collection('users')
-  return collection.where('notified', '==', null).where('dir', '==', 'LT').where('price', '>=', price).get()
+  return collection.where('notified', '==', null)
+    .where('dir', '==', LT)
+    .where('price', '>=', price).get()
 }
 
 /**
