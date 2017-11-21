@@ -40,10 +40,9 @@ describe('Notify', () => {
         .to.be.an.instanceof(Object)
     })
 
-
     it('should return an error if invalid parameters are given', () => {
-      expect(Notify.createTwilioClient('foo', 'bar'))
-        .to.throw
+      expect(() => Notify.createTwilioClient('foo', 'bar'))
+        .to.throw(Error)
     })
   })
 })

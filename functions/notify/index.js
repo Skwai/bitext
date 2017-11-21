@@ -13,8 +13,7 @@ const config = functions.config()
 module.exports = functions.https.onRequest((req, res) => {
   const notify = new Notify({
     db,
-    twilioAccountSID: config.twilio.accountsid,
-    twilioAuthToken: config.twilio.authtoken
+    twilio: config.twilio
   })
 
   const from = config.twilio.phonenumber
@@ -38,4 +37,5 @@ module.exports = functions.https.onRequest((req, res) => {
         })))
       }
     })
+    .then(() => res.sendStatus(204).end())
 })

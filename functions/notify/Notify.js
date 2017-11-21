@@ -9,27 +9,24 @@ class Notify {
   constructor ({
     db,
     from,
-    twilioAccountSID,
-    twilioAuthToken
+    twilio
   }) {
     Object.assign(this, {
       db,
       from,
-      twilioAccountSID,
-      twilioAuthToken
+      twilio
     })
-
-    this.twilio = Notify.createTwilioClient(twilioAccountSID, twilioAuthToken)
+    this.twilio = Notify.createTwilioClient(twilio.accountsid, twilio.authtoken)
   }
 
   /**
    * Create a new Twilio instance
-   * @param {String} twilioAccountSID
-   * @param {String} twilioAuthToken
+   * @param {String} sid
+   * @param {String} token
    * @return {Twilio}
    */
-  static createTwilioClient (twilioAccountSID, twilioAuthToken) {
-    return new Twilio(twilioAccountSID, twilioAuthToken)
+  static createTwilioClient (sid, token) {
+    return new Twilio(sid, token)
   }
 
   /**
