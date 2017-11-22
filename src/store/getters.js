@@ -15,3 +15,6 @@ export const submitted = ({ submitted }) => submitted
  * @return {Object}
  */
 export const historicalBtcPrices = ({ historicalBtcPrices }) => historicalBtcPrices
+
+export const storedPhoneNumber = ({ storedPhoneNumber }) => storedPhoneNumber
+export const storedCountryCode = ({ storedCountryCode }) => storedCountryCode

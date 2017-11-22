@@ -6,5 +6,8 @@ export default {
     projectId: 'innate-agency-110711',
     storageBucket: '',
     messagingSenderId: '166930265608'
-  }
+  },
+
+  STORAGE_PHONE_NUMBER: 'bitext:phoneNumber',
+  STORAGE_COUNTRY_CODE: 'bitext:phoneCountryCode'
 }

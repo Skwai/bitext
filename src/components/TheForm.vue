@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { parse } from 'libphonenumber-js'
 import AppButton from '@/components/AppButton'
 import AppLoading from '@/components/AppLoading'
@@ -93,6 +94,15 @@ export default {
     }
   },
 
+  watch: {
+    'user.phoneNumber' (val) {
+      this.$store.dispatch('setStoredPhoneNumber', val)
+    },
+    'user.phoneCountryCode' (val) {
+      this.$store.dispatch('setStoredCountryCode', val)
+    }
+  },
+
   computed: {
     countries: () => {
       return countries.sort((a, b) => {
@@ -110,7 +120,9 @@ export default {
 
     isValid () {
       return Object.values(this.validations).every(v => v)
-    }
+    },
+
+    ...mapGetters(['storedPhoneNumber', 'storedCountryCode'])
   },
 
   methods: {
@@ -130,7 +142,21 @@ export default {
       } finally {
         this.submitting = false
       }
+    },
+
+    loadStoredPhoneNumber () {
+      const { user, storedPhoneNumber, storedCountryCode } = this
+      if (storedPhoneNumber) {
+        user.phoneNumber = storedPhoneNumber
+      }
+      if (storedCountryCode) {
+        user.phoneCountryCode = storedCountryCode
+      }
     }
+  },
+
+  created () {
+    this.loadStoredPhoneNumber()
   }
 }
 </script>

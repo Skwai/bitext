@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import * as actions from '@/store/actions'
 import * as getters from '@/store/getters'
 import mutations from '@/store/mutations'
+import config from '@/config'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,10 @@ export default new Vuex.Store({
     countries: {},
     btcPrice: null,
     submitted: false,
-    historicalBtcPrices: {}
+    historicalBtcPrices: {},
+    storedPhoneNumber: localStorage.getItem(config.STORAGE_PHONE_NUMBER) || null,
+    storedCountryCode: localStorage.getItem(config.STORAGE_COUNTRY_CODE) || null
+
   },
   strict: debug
 })
