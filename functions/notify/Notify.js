@@ -107,11 +107,11 @@ class Notify {
    * @param {String} body The message to send
    * @return {Promise.<Object>}
    */
-  sendMessage ({ from, to, body }) {
+  sendMessage ({ from, to, message }) {
     return this.twilio.messages.create({
       to,
-      body,
-      from
+      from,
+      body: message
     })
   }
 
