@@ -15,5 +15,13 @@ export default {
 
   [types.SET_HISTORICAL_BTC_PRICES] (state, prices) {
     state.historicalBtcPrices = prices
+  },
+
+  [types.SET_STORED_PHONE_NUMBER] (state, phoneNumber) {
+    state.storedPhoneNumber = phoneNumber
+  },
+
+  [types.SET_STORED_COUNTRY_CODE] (state, countryCode) {
+    state.storedCountryCode = countryCode
   }
 }

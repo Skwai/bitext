@@ -2,7 +2,6 @@
   <AppLoading v-if="submitting" />
   <form v-else @submit.prevent="submit" :class="$style.AppForm">
     <div :class="$style.AppForm__Error" v-if="error">{{error}}</div>
-
     <div :class="{
       [$style.AppForm__Field]: true,
       [$style.AppForm__FieldValid]: validations.phoneNumber
@@ -104,12 +103,11 @@ export default {
   },
 
   computed: {
-    countries: () => {
+    countries () {
       return countries.sort((a, b) => {
         return a.phoneCode < b.phoneCode ? -1 : 1
       })
     },
-
     validations () {
       const { user } = this
       return {
@@ -117,20 +115,13 @@ export default {
         phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
       }
     },
-
     isValid () {
       return Object.values(this.validations).every(v => v)
     },
-
     ...mapGetters(['storedPhoneNumber', 'storedCountryCode'])
   },
 
   methods: {
-    addAnother () {
-      this.user.dir = 'GT'
-      this.user.price = null
-    },
-
     async submit () {
       this.submitting = true
       this.error = false
@@ -143,7 +134,6 @@ export default {
         this.submitting = false
       }
     },
-
     loadStoredPhoneNumber () {
       const { user, storedPhoneNumber, storedCountryCode } = this
       if (storedPhoneNumber) {
@@ -156,6 +146,7 @@ export default {
   },
 
   created () {
+    console.log('created')
     this.loadStoredPhoneNumber()
   }
 }

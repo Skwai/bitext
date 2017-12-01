@@ -17,10 +17,8 @@ export const resetSubmitted = ({ commit }) => {
 }
 
 export const getBtcPrice = async ({ commit }) => {
-  try {
-    const price = await priceService.getPrice()
-    commit(types.SET_BTC_PRICE, price)
-  } catch (err) {}
+  const price = await priceService.getPrice()
+  commit(types.SET_BTC_PRICE, price)
 }
 
 export const getHistoricalBtcPrices = async ({ commit }) => {
@@ -28,10 +26,12 @@ export const getHistoricalBtcPrices = async ({ commit }) => {
   commit(types.SET_HISTORICAL_BTC_PRICES, prices)
 }
 
-export const setStoredPhoneNumber = (ctx, phoneNumber) => {
+export const setStoredPhoneNumber = ({ commit }, phoneNumber) => {
   localStorage.setItem(config.STORAGE_PHONE_NUMBER, phoneNumber)
+  commit('SET_STORED_PHONE_NUMBER', phoneNumber)
 }
 
-export const setStoredCountryCode = (ctx, countryCode) => {
+export const setStoredCountryCode = ({ commit }, countryCode) => {
   localStorage.setItem(config.STORAGE_COUNTRY_CODE, countryCode)
+  commit('SET_STORED_COUNTRY_CODE', countryCode)
 }
