@@ -25,7 +25,7 @@ export default functions.https.onRequest(async (req, res) => {
       const users = await notify.getUsers(price)
 
       if (!users.length) {
-        console.log('No users to notify')
+        console.info('No users to notify')
       } else {
         console.info(`Messaging users: ${users.length}`)
         await Promise.all(users.map((user) => notify.sendUserMessage({
