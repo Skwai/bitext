@@ -8,52 +8,59 @@ const LT = 'LT'
 const GT = 'GT'
 
 export default class Notify {
-  twilio: Twilio = null
-
   constructor ({
     db,
     from,
     twilio
-  }: {
-    db: Firestore,
-    from: string,
-    twilio: Object
   }) {
-    Object.assign(this, { db, from })
-    this.twilio = this.constructor.createTwilioClient(twilio.accountsid, twilio.authtoken)
+    Object.assign(this, {
+      db,
+      from,
+      twilio
+    })
+    this.twilio = Notify.createTwilioClient(twilio.accountsid, twilio.authtoken)
   }
 
   /**
    * Create a new Twilio instance
+   * @param {String} sid
+   * @param {String} token
+   * @return {Twilio}
    */
-  static createTwilioClient (sid: string, token: string): Twilio {
+  static createTwilioClient (sid, token) {
     return new Twilio(sid, token)
   }
 
   /**
    * Get the current Bitcoin price
+   * @return {Promise<Number>}
    */
-  getPrice (): Promise<number> {
-    return fetch(COINDESK_API_URL)
-      .then((res) => res.json())
-      .then((data) => data.bpi.USD.rate_float)
+  async getPrice () {
+    const response = await fetch(COINDESK_API_URL)
+    const data = await response.json()
+    return data.bpi.USD.rate_float
   }
 
   /**
    * Get users who want to be notified of the price
+   * @param {Number} price
+   * @return {Promise<DocumentSnapshot[]>}
    */
-  getUsers (price: number): Promise<DocumentSnapshot[]> {
-    return Promise.all([
+  async getUsers (price) {
+    const [high, low] = await Promise.all([
       this.getHighUsers(price),
       this.getLowUsers(price)
-    ]).then(([high, low]) => [].concat(high.docs || [], low.docs || []))
+    ])
+    return [].concat(high.docs || [], low.docs || [])
   }
 
   /**
    * Get users who want to be notified of a high price
+   * @param {Number} price
+   * @return {Promise<QuerySnapshot>}
    */
-  getHighUsers (price: number): Promise<QuerySnapshot> {
-    const collection: CollectionReference = this.db.collection('users')
+  getHighUsers (price) {
+    const collection = this.db.collection('users')
     return collection.where('notified', '==', null)
       .where('dir', '==', GT)
       .where('price', '<=', price)
@@ -62,9 +69,11 @@ export default class Notify {
 
   /**
    * Get users who want to be notified of a low price
+   * @param {Number} price
+   * @return {Promise<QuerySnapshot>}
    */
-  getLowUsers (price: number): Promise<QuerySnapshot>  {
-    const collection: CollectionReference = this.db.collection('users')
+  getLowUsers (price) {
+    const collection = this.db.collection('users')
     return collection.where('notified', '==', null)
       .where('dir', '==', LT)
       .where('price', '>=', price)
@@ -73,21 +82,25 @@ export default class Notify {
 
   /**
    * Get a user's phone number
+   * @param {DocumentSnapshot} user
+   * @return {String[]}
    */
-  getUserPhoneNumber (userData: DocumentSnapshot): Object[] {
+  getUserPhoneNumber (userData) {
     const { phoneCountryCode, phoneNumber } = userData
     return [phoneCountryCode, phoneNumber].join('')
   }
 
   /**
-   * Send a messag to a user
+   *
+   * @param {DocumentSnapshot} user
+   * @param {String} message
+   * @return {Promise}
    */
-  async sendUserMessage ({ from: string, user: DocumentSnapshot, message: string }): Promise {
+  async sendUserMessage ({ from, user, message }) {
     const userData = user.data()
     const to = this.getUserPhoneNumber(userData)
     try {
-      this.sendMessage({ from, to, message })
-      this.setUserNotified(user)
+      await this.sendMessage({ from, to, message })
     } catch (err) {
       console.error(err)
       if (err.status === 400) {
@@ -98,8 +111,11 @@ export default class Notify {
 
   /**
    * Send an SMS
+   * @param {String} to Phone number to send message to
+   * @param {String} body The message to send
+   * @return {Promise}
    */
-  sendMessage ({ from: string, to: string, message: string }): Promise {
+  sendMessage ({ from, to, message }) {
     return this.twilio.messages.create({
       to,
       from,
@@ -109,15 +125,19 @@ export default class Notify {
 
   /**
    * Format price
+   * @param {Number} price To format
+   * @return {String}
    */
-  formatPrice (price: number): string {
+  formatPrice (price) {
     return `$${price.toFixed(2).toLocaleString()}`
   }
 
   /**
    * Set notified on the user
+   * @param {DocumentSnapshot} user
+   * @return {Promise}
    */
-  setUserNotified (user: DocumentSnapshot): Promise {
+  setUserNotified (user) {
     return user.ref.update({
       notified: new Date()
     })

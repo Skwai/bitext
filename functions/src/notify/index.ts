@@ -4,37 +4,36 @@ import Notify from './Notify'
 
 // Init Firebase
 admin.initializeApp(functions.config().firebase)
-const db: Firestore = admin.firestore()
-const config: Object = functions.config()
+const db = admin.firestore()
+const config = functions.config()
 
-/**
- * Listen to request
- */
-export default functions.https.onRequest(async (req: object, res;) => {
+export default functions.https.onRequest(async (req, res) => {
   const notify = new Notify({
     db,
     twilio: config.twilio
   })
 
-  const from: string = config.twilio.phonenumber
+  const from = config.twilio.phonenumber
 
   try {
-    const price: number = await notify.getPrice()
-    const formattedPrice: string = notify.formatPrice(price)
+    const price = await notify.getPrice()
+    const formattedPrice = notify.formatPrice(price)
     console.info(`Fetched price: ${formattedPrice}`)
-    const message: string = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`
+    const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`
+
     try {
-      const users: DocumentSnapshot[] = await notify.getUsers(price)
+      const users = await notify.getUsers(price)
 
       if (!users.length) {
         console.log('No users to notify')
       } else {
         console.info(`Messaging users: ${users.length}`)
-        await Promise.all(users.map((user: Do) => notify.sendUserMessage({
+        await Promise.all(users.map((user) => notify.sendUserMessage({
           from,
           user,
           message
         })))
+        console.info('Messaging complete')
       }
     } catch (err) {
       console.error('Could not retrieve users')
