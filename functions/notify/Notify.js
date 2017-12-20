@@ -98,7 +98,12 @@ class Notify {
     const to = this.getUserPhoneNumber(userData)
     return this.sendMessage({ from, to, message })
       .then(() => this.setUserNotified(user))
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err)
+        if (err.status === 400) {
+          this.setUserNotified(user)
+        }
+      })
   }
 
   /**
