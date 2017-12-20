@@ -110,19 +110,27 @@ export default {
     },
     validations () {
       const { user } = this
+      const { phone } = this.parsedPhoneNumber
       return {
         price: !isNaN(user.price) && Number(user.price) > 0,
-        phoneNumber: 'phone' in parse(`${user.phoneCountryCode}${user.phoneNumber}`)
+        phoneNumber: phone && phone === user.phoneNumber
       }
     },
     isValid () {
       return Object.values(this.validations).every(v => v)
+    },
+    parsedPhoneNumber () {
+      const { user } = this
+      return parse(`${user.phoneCountryCode}${user.phoneNumber}`)
     },
     ...mapGetters(['storedPhoneNumber', 'storedCountryCode'])
   },
 
   methods: {
     async submit () {
+      if (this.submitting || !this.isValid) {
+        return
+      }
       this.submitting = true
       this.error = false
       try {
@@ -144,9 +152,7 @@ export default {
       }
     }
   },
-
   created () {
-    console.log('created')
     this.loadStoredPhoneNumber()
   }
 }
