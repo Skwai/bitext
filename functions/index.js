@@ -110,7 +110,7 @@ exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0
         try {
             const users = yield notify.getUsers(price);
             if (!users.length) {
-                console.log('No users to notify');
+                console.info('No users to notify');
             }
             else {
                 console.info(`Messaging users: ${users.length}`);
@@ -164,7 +164,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fetch_1 = __webpack_require__(5);
-const twilio_1 = __webpack_require__(6);
+const Twilio = __webpack_require__(6);
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 const LT = 'LT';
 const GT = 'GT';
@@ -175,7 +175,7 @@ class Notify {
             from,
             twilio
         });
-        this.twilio = Notify.createTwilioClient(twilio.accountsid, twilio.authtoken);
+        this.twilio = this.createTwilioClient(twilio.accountsid, twilio.authtoken);
     }
     /**
      * Create a new Twilio instance
@@ -183,8 +183,8 @@ class Notify {
      * @param {String} token
      * @return {Twilio}
      */
-    static createTwilioClient(sid, token) {
-        return new twilio_1.default(sid, token);
+    createTwilioClient(sid, token) {
+        return new Twilio(sid, token);
     }
     /**
      * Get the current Bitcoin price

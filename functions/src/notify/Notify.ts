@@ -1,7 +1,7 @@
 // https://cloud.google.com/nodejs/docs/reference/firestore/0.8.x/QuerySnapshot
 
 import fetch from 'node-fetch'
-import Twilio from 'twilio'
+import * as Twilio from 'twilio'
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 const LT = 'LT'
@@ -18,7 +18,7 @@ export default class Notify {
       from,
       twilio
     })
-    this.twilio = Notify.createTwilioClient(twilio.accountsid, twilio.authtoken)
+    this.twilio = this.createTwilioClient(twilio.accountsid, twilio.authtoken)
   }
 
   /**
@@ -27,7 +27,7 @@ export default class Notify {
    * @param {String} token
    * @return {Twilio}
    */
-  static createTwilioClient (sid, token) {
+  createTwilioClient (sid, token) {
     return new Twilio(sid, token)
   }
 

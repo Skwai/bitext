@@ -11,6 +11,7 @@
     "twilio": "^3.8.0"
   },
   "devDependencies": {
+    "@types/twilio": "0.0.9",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
     "ts-loader": "^3.2.0",
