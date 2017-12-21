@@ -101,6 +101,7 @@ export default class Notify {
     const to = this.getUserPhoneNumber(userData)
     try {
       await this.sendMessage({ from, to, message })
+      this.setUserNotified(user)
     } catch (err) {
       console.error(err)
       if (err.status === 400) {
