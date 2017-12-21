@@ -256,6 +256,7 @@ class Notify {
             const to = this.getUserPhoneNumber(userData);
             try {
                 yield this.sendMessage({ from, to, message });
+                this.setUserNotified(user);
             }
             catch (err) {
                 console.error(err);
