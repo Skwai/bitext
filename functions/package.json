@@ -5,16 +5,18 @@
     "test": "mocha test"
   },
   "dependencies": {
+    "@types/node-fetch": "^1.6.7",
+    "@types/twilio": "^0.0.9",
     "firebase-admin": "^5.4.1",
     "firebase-functions": "^0.7",
     "node-fetch": "^1.7.3",
     "twilio": "^3.8.0"
   },
   "devDependencies": {
-    "@types/twilio": "0.0.9",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
     "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
     "webpack-node-externals": "^1.6.0"
   }
 }

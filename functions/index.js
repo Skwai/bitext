@@ -106,24 +106,26 @@ exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0
         const price = yield notify.getPrice();
         const formattedPrice = notify.formatPrice(price);
         console.info(`Fetched price: ${formattedPrice}`);
-        const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
         try {
             const users = yield notify.getUsers(price);
-            if (!users.length) {
-                console.info('No users to notify');
-            }
-            else {
+            if (users.length) {
+                const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
                 console.info(`Messaging users: ${users.length}`);
-                yield Promise.all(users.map((user) => notify.sendUserMessage({
+                const promises = users.map((user) => notify.sendUserMessage({
                     from,
                     user,
                     message
-                })));
+                }));
+                yield Promise.all(promises);
                 console.info('Messaging complete');
+            }
+            else {
+                console.info('No users to notify');
             }
         }
         catch (err) {
             console.error('Could not retrieve users');
+            res.sendStatus(204).end();
         }
     }
     catch (err) {
@@ -170,26 +172,14 @@ const LT = 'LT';
 const GT = 'GT';
 class Notify {
     constructor({ db, from, twilio }) {
-        Object.assign(this, {
-            db,
-            from,
-            twilio
-        });
-        this.twilio = this.createTwilioClient(twilio.accountsid, twilio.authtoken);
+        Object.assign(this, { db, from, twilio });
+        this.initTwilio(twilio.accountsid, twilio.authtoken);
     }
-    /**
-     * Create a new Twilio instance
-     * @param {String} sid
-     * @param {String} token
-     * @return {Twilio}
-     */
-    createTwilioClient(sid, token) {
-        return new Twilio(sid, token);
+    /** Create a new Twilio instance */
+    initTwilio(sid, token) {
+        this.twilio = new Twilio.Client(sid, token);
     }
-    /**
-     * Get the current Bitcoin price
-     * @return {Promise<Number>}
-     */
+    /** Get the current Bitcoin price */
     getPrice() {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield node_fetch_1.default(COINDESK_API_URL);
@@ -197,25 +187,17 @@ class Notify {
             return data.bpi.USD.rate_float;
         });
     }
-    /**
-     * Get users who want to be notified of the price
-     * @param {Number} price
-     * @return {Promise<DocumentSnapshot[]>}
-     */
+    /** Get users who want to be notified of the price */
     getUsers(price) {
         return __awaiter(this, void 0, void 0, function* () {
             const [high, low] = yield Promise.all([
                 this.getHighUsers(price),
                 this.getLowUsers(price)
             ]);
-            return [].concat(high.docs || [], low.docs || []);
+            return [...high.docs, ...low.docs];
         });
     }
-    /**
-     * Get users who want to be notified of a high price
-     * @param {Number} price
-     * @return {Promise<QuerySnapshot>}
-     */
+    /** Get users who want to be notified of a high price */
     getHighUsers(price) {
         const collection = this.db.collection('users');
         return collection.where('notified', '==', null)
@@ -223,11 +205,7 @@ class Notify {
             .where('price', '<=', price)
             .get();
     }
-    /**
-     * Get users who want to be notified of a low price
-     * @param {Number} price
-     * @return {Promise<QuerySnapshot>}
-     */
+    /** Get users who want to be notified of a low price */
     getLowUsers(price) {
         const collection = this.db.collection('users');
         return collection.where('notified', '==', null)
@@ -235,21 +213,12 @@ class Notify {
             .where('price', '>=', price)
             .get();
     }
-    /**
-     * Get a user's phone number
-     * @param {DocumentSnapshot} user
-     * @return {String[]}
-     */
+    /** Get a user's phone number */
     getUserPhoneNumber(userData) {
         const { phoneCountryCode, phoneNumber } = userData;
         return [phoneCountryCode, phoneNumber].join('');
     }
-    /**
-     *
-     * @param {DocumentSnapshot} user
-     * @param {String} message
-     * @return {Promise}
-     */
+    /** Send a message to a user */
     sendUserMessage({ from, user, message }) {
         return __awaiter(this, void 0, void 0, function* () {
             const userData = user.data();
@@ -266,12 +235,7 @@ class Notify {
             }
         });
     }
-    /**
-     * Send an SMS
-     * @param {String} to Phone number to send message to
-     * @param {String} body The message to send
-     * @return {Promise}
-     */
+    /** Send an SMS */
     sendMessage({ from, to, message }) {
         return this.twilio.messages.create({
             to,
@@ -279,19 +243,11 @@ class Notify {
             body: message
         });
     }
-    /**
-     * Format price
-     * @param {Number} price To format
-     * @return {String}
-     */
+    /** Format price */
     formatPrice(price) {
         return `$${price.toFixed(2).toLocaleString()}`;
     }
-    /**
-     * Set notified on the user
-     * @param {DocumentSnapshot} user
-     * @return {Promise}
-     */
+    /** Set notified on the user */
     setUserNotified(user) {
         return user.ref.update({
             notified: new Date()
