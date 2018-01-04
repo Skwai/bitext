@@ -2,7 +2,6 @@
 
 import fetch from 'node-fetch'
 import * as Twilio from 'twilio'
-import { Message } from 'firebase-functions/lib/providers/pubsub';
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 const LT = 'LT'
