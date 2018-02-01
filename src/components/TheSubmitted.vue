@@ -3,18 +3,22 @@
     <svg :class="$style.TheSubmitted__Icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
     <span :class="$style.TheSubmitted__Message">Done</span>
     <button
-      @click.prevent="resetSubmitted"
+      @click.prevent="reset"
       :class="$style.TheSubmitted__Reset"
     >Add another</button>
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    resetSubmitted () {
-      this.$store.dispatch('resetSubmitted')
-    }
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
+
+@Component
+export default class TheSubmitted extends Vue {
+  @Action private resetSubmitted: () => void
+
+  private reset() {
+    this.resetSubmitted()
   }
 }
 </script>

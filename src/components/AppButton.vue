@@ -6,9 +6,13 @@
   ><slot /></button>
 </template>
 
-<script>
-export default {
-  props: ['disabled']
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
+
+@Component
+export default class AppButton extends Vue {
+  @Prop({ required: true })
+  private disabled: boolean
 }
 </script>
 

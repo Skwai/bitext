@@ -71,88 +71,104 @@
   </form>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
 import { parse } from 'libphonenumber-js'
-import AppButton from '@/components/AppButton'
-import AppLoading from '@/components/AppLoading'
-import User from '@/models/User'
-import countries from '@/data/countries'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
+import { Action, Getter } from 'vuex-class'
 
-export default {
+import * as countries from '../data/countries.json'
+import User from '../models/User'
+import AppButton from './AppButton.vue'
+import AppLoading from './AppLoading.vue'
+
+interface ICountryCode {
+  name: string
+  phoneCode: string
+  code: string
+}
+
+@Component({
   components: {
     AppButton,
     AppLoading
-  },
+  }
+})
+export default class TheForm extends Vue {
+  private error: string | null = null
+  private submitting: boolean = false
+  private user: User = new User()
 
-  data () {
+  @Action private setStoredPhoneNumber: (phoneNumber: string) => void
+
+  @Action private setStoredCountryCode: (countryCode: string) => void
+
+  @Getter private storedPhoneNumber: string
+
+  @Getter private storedCountryCode: string
+
+  @Watch('user.phoneNumber')
+  private onPhoneNumberChanged(val: string) {
+    this.setStoredPhoneNumber(val)
+  }
+
+  @Watch('user.phoneCountryCode')
+  private onPhoneCountryCodeChanged(val: string) {
+    this.setStoredCountryCode(val)
+  }
+
+  get countries(): ICountryCode[] {
+    return countries.sort((a: ICountryCode, b: ICountryCode) => {
+      return a.phoneCode < b.phoneCode ? -1 : 1
+    })
+  }
+
+  get validations() {
+    const { phone } = this.parsedPhoneNumber
+    const phoneNumber = phone && phone === this.user.phoneNumber
+    const price = !isNaN(this.user.price) && Number(this.user.price) > 0
     return {
-      submitting: false,
-      error: false,
-      user: new User()
+      phoneNumber,
+      price
     }
-  },
+  }
 
-  watch: {
-    'user.phoneNumber' (val) {
-      this.$store.dispatch('setStoredPhoneNumber', val)
-    },
-    'user.phoneCountryCode' (val) {
-      this.$store.dispatch('setStoredCountryCode', val)
+  get isValid() {
+    return Object.values(this.validations).every((v) => v)
+  }
+
+  get parsedPhoneNumber() {
+    return parse(`${this.user.phoneCountryCode}${this.user.phoneNumber}`)
+  }
+
+  private async submit() {
+    if (this.submitting || !this.isValid) {
+      return
     }
-  },
-
-  computed: {
-    countries () {
-      return countries.sort((a, b) => {
-        return a.phoneCode < b.phoneCode ? -1 : 1
-      })
-    },
-    validations () {
-      const { user } = this
-      const { phone } = this.parsedPhoneNumber
-      return {
-        price: !isNaN(user.price) && Number(user.price) > 0,
-        phoneNumber: phone && phone === user.phoneNumber
-      }
-    },
-    isValid () {
-      return Object.values(this.validations).every(v => v)
-    },
-    parsedPhoneNumber () {
-      const { user } = this
-      return parse(`${user.phoneCountryCode}${user.phoneNumber}`)
-    },
-    ...mapGetters(['storedPhoneNumber', 'storedCountryCode'])
-  },
-
-  methods: {
-    async submit () {
-      if (this.submitting || !this.isValid) {
-        return
-      }
-      this.submitting = true
-      this.error = false
-      try {
-        await this.$store.dispatch('addUser', this.user)
-        this.$store.dispatch('wasSubmitted')
-      } catch (err) {
-        this.error = 'There was a problem submitting form'
-      } finally {
-        this.submitting = false
-      }
-    },
-    loadStoredPhoneNumber () {
-      const { user, storedPhoneNumber, storedCountryCode } = this
-      if (storedPhoneNumber) {
-        user.phoneNumber = storedPhoneNumber
-      }
-      if (storedCountryCode) {
-        user.phoneCountryCode = storedCountryCode
-      }
+    this.submitting = true
+    this.error = null
+    try {
+      await this.$store.dispatch('addUser', this.user)
+      this.$store.dispatch('wasSubmitted')
+    } catch (err) {
+      this.error = 'There was a problem submitting form'
+    } finally {
+      this.submitting = false
     }
-  },
-  created () {
+  }
+  private loadStoredPhoneNumber() {
+    const { user, storedPhoneNumber, storedCountryCode } = this
+
+    if (storedPhoneNumber) {
+      user.phoneNumber = storedPhoneNumber
+    }
+
+    if (storedCountryCode) {
+      user.phoneCountryCode = storedCountryCode
+    }
+  }
+
+  private created() {
     this.loadStoredPhoneNumber()
   }
 }

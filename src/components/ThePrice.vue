@@ -11,46 +11,47 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import AppLoading from '@/components/AppLoading'
-import ThePriceChart from '@/components/ThePriceChart'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+
+import AppLoading from './AppLoading.vue'
+import ThePriceChart from './ThePriceChart.vue'
 
 const UPDATE_INTERVAL = 30 * 1000 // ms
 
-export default {
+@Component({
   components: {
     AppLoading,
     ThePriceChart
-  },
+  }
+})
+export default class ThePrice extends Vue {
+  @Getter private btcPrice: number
 
-  computed: {
-    price () {
-      const { btcPrice } = this
-      const [dollars, cents] = Number(btcPrice)
-        .toFixed(2)
-        .split('.')
-        .map((n) => Number(n).toLocaleString())
+  private getPrice() {
+    this.$store.dispatch('getBtcPrice')
+    setTimeout(this.getPrice, UPDATE_INTERVAL)
+  }
 
-      return {
-        dollars,
-        cents: Number(cents) < 10 ? `${cents}0` : cents
-      }
-    },
-    loading () {
-      return !this.btcPrice
-    },
-    ...mapGetters(['btcPrice'])
-  },
+  get price() {
+    const { btcPrice } = this
+    const [dollars, cents] = Number(btcPrice)
+      .toFixed(2)
+      .split('.')
+      .map((n) => Number(n).toLocaleString())
 
-  methods: {
-    getPrice () {
-      this.$store.dispatch('getBtcPrice')
-      setTimeout(this.getPrice, UPDATE_INTERVAL)
+    return {
+      cents: Number(cents) < 10 ? `${cents}0` : cents,
+      dollars
     }
-  },
+  }
 
-  created () {
+  get loading(): boolean {
+    return !this.btcPrice
+  }
+
+  private created() {
     this.getPrice()
   }
 }
