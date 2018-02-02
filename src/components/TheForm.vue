@@ -77,10 +77,16 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import { Action, Getter } from 'vuex-class'
 
-import * as countries from '../data/countries.json'
+import countries from '../data/countries'
 import User from '../models/User'
 import AppButton from './AppButton.vue'
 import AppLoading from './AppLoading.vue'
+
+interface ICountry {
+  name: string,
+  phoneCode: string
+  code: string
+}
 
 interface ICountryCode {
   name: string
@@ -100,11 +106,8 @@ export default class TheForm extends Vue {
   private user: User = new User()
 
   @Action private setStoredPhoneNumber: (phoneNumber: string) => void
-
   @Action private setStoredCountryCode: (countryCode: string) => void
-
   @Getter private storedPhoneNumber: string
-
   @Getter private storedCountryCode: string
 
   @Watch('user.phoneNumber')
@@ -118,7 +121,7 @@ export default class TheForm extends Vue {
   }
 
   get countries(): ICountryCode[] {
-    return countries.sort((a: ICountryCode, b: ICountryCode) => {
+    return (countries as ICountry[]).sort((a: ICountryCode, b: ICountryCode) => {
       return a.phoneCode < b.phoneCode ? -1 : 1
     })
   }
@@ -126,7 +129,7 @@ export default class TheForm extends Vue {
   get validations() {
     const { phone } = this.parsedPhoneNumber
     const phoneNumber = phone && phone === this.user.phoneNumber
-    const price = !isNaN(this.user.price) && Number(this.user.price) > 0
+    const price = !isNaN(this.user.price as number) && Number(this.user.price) > 0
     return {
       phoneNumber,
       price

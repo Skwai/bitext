@@ -11,7 +11,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class AppButton extends Vue {
-  @Prop({ required: true })
+  @Prop({ required: true, default: false })
   private disabled: boolean
 }
 </script>

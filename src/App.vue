@@ -7,24 +7,25 @@
   </main>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import TheForm from '@/components/TheForm'
-import TheHeader from '@/components/TheHeader'
-import ThePrice from '@/components/ThePrice'
-import TheSubmitted from '@/components/TheSubmitted'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
-export default {
+import TheForm from './components/TheForm.vue'
+import TheHeader from './components/TheHeader.vue'
+import ThePrice from './components/ThePrice.vue'
+import TheSubmitted from './components/TheSubmitted.vue'
+
+@Component({
   components: {
     TheForm,
     TheHeader,
     ThePrice,
     TheSubmitted
-  },
-
-  computed: {
-    ...mapGetters(['submitted'])
   }
+})
+export default class App extends Vue {
+  @Getter private submitted: boolean
 }
 </script>
 

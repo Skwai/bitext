@@ -5,7 +5,7 @@
 <script lang="ts">
 import Chartist from 'chartist'
 import { Component, Vue } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 
 const CHARTIST_OPTIONS: Chartist.ILineChartOptions = {
   axisX: {
@@ -27,12 +27,14 @@ const CHARTIST_OPTIONS: Chartist.ILineChartOptions = {
 
 @Component
 export default class ThePriceExtends extends Vue {
-  private chart: Chartist.IChartistLineChart
+  private chart: Chartist.IChartistLineChart | null = null
 
   @Getter private historicalBtcPrices: any
 
+  @Action private getHistoricalBtcPrices: () => Promise<void>
+
   private async created() {
-    await this.$store.dispatch('getHistoricalBtcPrices')
+    await this.getHistoricalBtcPrices()
     await this.$nextTick()
     this.renderChart()
   }

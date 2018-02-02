@@ -3,30 +3,41 @@ const COINDESK_HISTORICAL_URL = 'https://api.coindesk.com/v1/bpi/historical/clos
 
 export const getPrice = async () => {
   const response = await fetch(COINDESK_CURRENT_URL, {
-    mode: 'cors',
     headers: {
       Accept: 'application/json'
-    }
+    },
+    mode: 'cors'
   })
   const data = await response.json()
-  const price = data.bpi.USD.rate_float
-  return price
+  return data.bpi.USD.rate_float as number
 }
 
 export const getHistoricalPrice = async () => {
-  const end = new Date().toISOString().split('T').shift()
-  const start = (() => {
-    const date = new Date()
-    date.setMonth(date.getMonth() - 3)
-    return date.toISOString().split('T').shift()
-  })()
+  const end = getEndDate()
+  const start = getStartDate()
   const query = `start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`
   const response = await fetch(`${COINDESK_HISTORICAL_URL}?${query}`, {
-    mode: 'cors',
     headers: {
       Accept: 'application/json'
-    }
+    },
+    mode: 'cors'
   })
   const { bpi } = await response.json()
   return bpi
+}
+
+const getStartDate = () => {
+  const date = new Date()
+  date.setMonth(date.getMonth() - 3)
+  return date
+    .toISOString()
+    .split('T')
+    .shift() as string
+}
+
+const getEndDate = () => {
+  return new Date()
+    .toISOString()
+    .split('T')
+    .shift() as string
 }
