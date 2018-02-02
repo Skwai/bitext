@@ -99,7 +99,7 @@ const config = functions.config();
 exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const notify = new Notify_1.default({
         db,
-        from: "Bitext",
+        from: 'Bitext',
         twilio: config.twilio
     });
     const from = config.twilio.phonenumber;
@@ -112,7 +112,7 @@ exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0
             if (users.length) {
                 const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
                 console.info(`Messaging users: ${users.length}`);
-                const promises = users.map((user) => notify.sendUserMessage({
+                const promises = users.map(user => notify.sendUserMessage({
                     from,
                     user,
                     message

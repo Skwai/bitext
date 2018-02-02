@@ -27,11 +27,13 @@ export default functions.https.onRequest(async (req, res) => {
       if (users.length) {
         const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`
         console.info(`Messaging users: ${users.length}`)
-        const promises = users.map((user) => notify.sendUserMessage({
-          from,
-          user,
-          message
-        }))
+        const promises = users.map(user =>
+          notify.sendUserMessage({
+            from,
+            user,
+            message
+          })
+        )
         await Promise.all(promises)
         console.info('Messaging complete')
       } else {
