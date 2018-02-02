@@ -10,6 +10,7 @@ const config = functions.config()
 export default functions.https.onRequest(async (req, res) => {
   const notify = new Notify({
     db,
+    from: 'Bitext',
     twilio: config.twilio
   })
 

@@ -99,6 +99,7 @@ const config = functions.config();
 exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const notify = new Notify_1.default({
         db,
+        from: "Bitext",
         twilio: config.twilio
     });
     const from = config.twilio.phonenumber;
@@ -177,7 +178,7 @@ class Notify {
     }
     /** Create a new Twilio instance */
     initTwilio(sid, token) {
-        this.twilio = new Twilio.Client(sid, token);
+        this.twilio = new Twilio.RestClient(sid, token);
     }
     /** Get the current Bitcoin price */
     getPrice() {
@@ -237,10 +238,14 @@ class Notify {
     }
     /** Send an SMS */
     sendMessage({ from, to, message }) {
-        return this.twilio.messages.create({
-            to,
-            from,
-            body: message
+        return __awaiter(this, void 0, void 0, function* () {
+            // return's a `Q` promise. Sanitize to native promise by awaiting result
+            const result = yield this.twilio.messages.create({
+                to,
+                from,
+                body: message
+            });
+            return result;
         });
     }
     /** Format price */
