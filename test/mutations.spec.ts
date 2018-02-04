@@ -1,5 +1,5 @@
-import mutations from '../../../src/store/mutations'
-import * as types from '../../../src/store/types'
+import mutations from '../src/store/mutations'
+import * as types from '../src/store/types'
 
 describe('mutations.js', () => {
   describe(types.SET_BTC_PRICE, () => {

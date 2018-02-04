@@ -1,4 +1,4 @@
-import { btcPrice, submitted } from '../../../src/store/getters'
+import { btcPrice, submitted } from '../src/store/getters'
 
 describe('getters.js', () => {
   describe('btcPrice', () => {
