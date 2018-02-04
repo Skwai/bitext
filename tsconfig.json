@@ -8,7 +8,8 @@
     "target": "es5",
     "allowJs": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "es5", "es6", "es2015", "es2017"]
+    "lib": ["dom", "es5", "es6", "es2015", "es2017"],
+    "strictPropertyInitialization": false
   },
   "include": ["./src/**/*.ts", "./src/**/*.vue"],
   "typeRoots": ["./src/types", "./node_modules/@types"]

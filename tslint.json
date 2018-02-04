@@ -3,7 +3,6 @@
   "rules": {
     "prettier": true,
     "no-shadowed-variable": false,
-    "no-this-assignment": [true, { "allow-destructuring": true }],
-    "strictPropertyInitialization": false
+    "no-this-assignment": [true, { "allow-destructuring": true }]
   }
 }

@@ -47,7 +47,7 @@ export default class ThePrice extends Vue {
     }
   }
 
-  get loading(): boolean {
+  get loading() {
     return !this.btcPrice
   }
 

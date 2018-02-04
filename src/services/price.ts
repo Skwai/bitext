@@ -23,12 +23,12 @@ export const getHistoricalPrice = async () => {
     mode: 'cors'
   })
   const { bpi } = await response.json()
-  return bpi
+  return bpi as number
 }
 
-const getStartDate = () => {
+const getStartDate = (months: number = 3) => {
   const date = new Date()
-  date.setMonth(date.getMonth() - 3)
+  date.setMonth(date.getMonth() - months)
   return date
     .toISOString()
     .split('T')
