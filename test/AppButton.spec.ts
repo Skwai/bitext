@@ -2,10 +2,10 @@ import { mount } from 'vue-test-utils'
 import AppButton from '../src/components/AppButton.vue'
 
 describe('AppButton.vue', () => {
-  it('Should render correct button', async () => {
+  it('Should render correct button', () => {
     // console.log(AppButton)
 
-    const wrapper = await mount(AppButton, {
+    const wrapper = mount(AppButton, {
       slots: {
         default: 'Example'
       }
