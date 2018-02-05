@@ -10,10 +10,12 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
-export default class AppButton extends Vue {
+class AppButton extends Vue {
   @Prop({ required: false, default: false })
   private disabled: boolean
 }
+
+export default AppButton
 </script>
 
 <style lang="stylus" module>
