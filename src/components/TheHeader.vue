@@ -8,39 +8,48 @@
   </header>
 </template>
 
-<script>
-export default {}
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class TheHeader extends Vue {}
 </script>
 
 <style lang="stylus" module>
-@require "../styles/config"
+.TheHeader {
+  margin: 0 auto 2.25rem;
 
-.TheHeader
-  margin: 0 auto spacingLarge
+  &__Title {
+    font-size: 87.5%;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
 
-  &__Title
-    caps()
-    font-size: 1.25rem
-    text-align: center
-    margin-bottom: spacingBase
+  &__Description {
+    font-weight: 400;
+    font-size: 1rem;
+    text-align: center;
+  }
 
-  &__Description
-    font-weight: 400
-    font-size: 1rem
-    text-align: center
+  &__Logo {
+    width: 4rem;
+    height: 4rem;
+    border: #499AFF solid 3px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
 
-  &__Logo
-    width: 4rem
-    height: 4rem
-    border: colorPrimary solid 3px
-    border-radius: 50%
-    display: flex
-    align-items: center
-    justify-content: center
-    margin: 0 auto spacingBase
-
-    svg
-      width: 50%
-      height: 50%
-      fill: currentColor
+    svg {
+      width: 50%;
+      height: 50%;
+      fill: currentColor;
+    }
+  }
+}
 </style>

@@ -7,37 +7,44 @@
   </div>
 </template>
 
-<script>
-export default {}
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class AppLoading extends Vue {}
 </script>
 
 <style lang="stylus" module>
-@require "../styles/config"
+@keyframes AppLoading {
+  from {
+    transform: rotate(0deg);
+  }
 
-@keyframes AppLoading
-  from
-    transform: rotate(0deg)
-  to
-    transform: rotate(359deg)
+  to {
+    transform: rotate(359deg);
+  }
+}
 
-.AppLoading
-  size = 4rem
+.AppLoading {
+  size = 4rem;
+  min-height: size;
+  min-width: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  min-height: size
-  min-width: size
-  display: flex
-  align-items: center
-  justify-content: center
+  &__Icon {
+    width: (size / 5 * 3);
+    height: (size / 5 * 3);
+    animation: AppLoading 1s infinite;
 
-  &__Icon
-    width: (size / 5 * 3)
-    height: (size / 5 * 3)
-    animation: AppLoading 1s infinite
+    &Inner, &Outer {
+      fill: #499AFF;
+    }
 
-    &Inner,
-    &Outer
-      fill: colorPrimary
-
-    &Outer
-      opacity: .2
+    &Outer {
+      opacity: 0.2;
+    }
+  }
+}
 </style>

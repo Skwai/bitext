@@ -2,69 +2,78 @@
   <div class="ThePriceChart"></div>
 </template>
 
-<script>
+<script lang="ts">
 import Chartist from 'chartist'
-import { mapGetters } from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
 
-export default {
-  async created () {
-    await this.$store.dispatch('getHistoricalBtcPrices')
+const CHARTIST_OPTIONS: Chartist.ILineChartOptions = {
+  axisX: {
+    offset: 0,
+    showGrid: false,
+    showLabel: false
+  },
+  axisY: {
+    offset: 0,
+    showGrid: false,
+    showLabel: false
+  },
+  chartPadding: { top: 0, left: 0, bottom: 0, right: 0 },
+  fullWidth: true,
+  low: 0,
+  showArea: true,
+  showPoint: false
+}
+
+@Component
+export default class ThePriceChart extends Vue {
+  private chart: Chartist.IChartistLineChart | null = null
+
+  @Getter private historicalBtcPrices: any
+
+  @Action private getHistoricalBtcPrices: () => Promise<void>
+
+  private async created() {
+    await this.getHistoricalBtcPrices()
     await this.$nextTick()
     this.renderChart()
-  },
+  }
 
-  computed: {
-    priceData () {
-      return Object.values(this.historicalBtcPrices)
-    },
-    ...mapGetters(['historicalBtcPrices'])
-  },
+  get priceData(): number[] {
+    return Object.values(this.historicalBtcPrices)
+  }
 
-  methods: {
-    renderChart () {
-      /* eslint-disable no-new */
-      new Chartist.Line(this.$el, {
-        series: [ this.priceData ]
-      }, {
-        chartPadding: 0,
-        fullWidth: true,
-        low: 0,
-        showArea: true,
-        showPoint: false,
-        axisX: {
-          showLabel: false,
-          showGrid: false,
-          offset: 0
-        },
-        axisY: {
-          showLabel: false,
-          showGrid: false,
-          offset: 0
-        }
-      })
-    }
+  private renderChart() {
+    this.chart = new Chartist.Line(
+      this.$el,
+      {
+        series: [this.priceData]
+      },
+      CHARTIST_OPTIONS
+    )
   }
 }
 </script>
 
 <style lang="stylus">
-@import "../styles/config.styl"
+.ThePriceChart {
+  line-height: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
 
-.ThePriceChart
-  line-height: 0
-  position: absolute
-  left: 0
-  top: 0
-  bottom: 0
-  right: 0
+  .ct-area {
+    fill: #499AFF;
+    fill-opacity: 0.15;
+  }
 
-  .ct-area
-    fill: colorPrimary
-    fill-opacity: .15
-
-  .ct-line
-    stroke: colorPrimary
-    stroke-width: 1px
-    stroke-opacity: .5
-    fill: none
+  .ct-line {
+    stroke: #499AFF;
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+    fill: none;
+  }
+}
 </style>

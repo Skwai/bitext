@@ -1,23 +1,19 @@
-// For authoring Nightwatch tests, see
-// http://nightwatchjs.org/guide#usage
+// https://docs.cypress.io/api/introduction/api.html
 
-module.exports = {
-  'Test form workflow': (browser) => {
-    const server = browser.globals.devServerURL
-
-    browser
-      .url(server)
-      .waitForElementPresent('#App', 5000)
-      .waitForElementPresent('form', 5000)
-      .setValue('#AppForm__CountryCode', '+61')
-      .setValue('#AppForm__PhoneNumber', '412345678')
-      .setValue('#AppForm__Dir', 'GT')
-      .setValue('#AppForm__Price', 5000)
-      .click('form button[type=submit]')
-      .waitForElementNotPresent('form', 5000)
-      .waitForElementPresent('button', 5000)
-      .click('button')
-      .waitForElementPresent('form', 5000)
-      .end()
-  }
-}
+describe('App', () => {
+  it('Submits the form', () => {
+    /*
+    cy.visit(Cypress.env('VUE_DEV_SERVER_URL'))
+    cy.get('#App')
+    cy.get('form')
+    cy.get('#AppForm__CountryCode').select('+61')
+    cy.get('#AppForm__PhoneNumber').type('412345678')
+    cy.get('#AppForm__Dir').select('GT')
+    cy.get('#AppForm__Price').type(5000)
+    cy.get('button').click()
+    cy.not('form')
+    cy.get('button').click()
+    cy.contains('form')
+    */
+  })
+})
