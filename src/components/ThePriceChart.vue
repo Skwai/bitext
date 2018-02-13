@@ -26,7 +26,7 @@ const CHARTIST_OPTIONS: Chartist.ILineChartOptions = {
 }
 
 @Component
-export default class ThePriceExtends extends Vue {
+export default class ThePriceChart extends Vue {
   private chart: Chartist.IChartistLineChart | null = null
 
   @Getter private historicalBtcPrices: any
@@ -56,23 +56,24 @@ export default class ThePriceExtends extends Vue {
 </script>
 
 <style lang="stylus">
-@import "../styles/config.styl"
+.ThePriceChart {
+  line-height: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
 
-.ThePriceChart
-  line-height: 0
-  position: absolute
-  left: 0
-  top: 0
-  bottom: 0
-  right: 0
+  .ct-area {
+    fill: #499AFF;
+    fill-opacity: 0.15;
+  }
 
-  .ct-area
-    fill: colorPrimary
-    fill-opacity: .15
-
-  .ct-line
-    stroke: colorPrimary
-    stroke-width: 1px
-    stroke-opacity: .5
-    fill: none
+  .ct-line {
+    stroke: #499AFF;
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+    fill: none;
+  }
+}
 </style>

@@ -1,5 +1,5 @@
 import { mount } from 'vue-test-utils'
-import AppButton from '../src/components/AppButton.vue'
+import AppButton from '@/components/AppButton.vue'
 
 describe('AppButton.vue', () => {
   it('Should render correct button', () => {

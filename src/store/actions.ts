@@ -32,11 +32,15 @@ export const getHistoricalBtcPrices = async ({ commit }: IActionContext) => {
 }
 
 export const setStoredPhoneNumber = ({ commit }: IActionContext, phoneNumber: string) => {
-  localStorage.setItem(config.STORAGE_PHONE_NUMBER, phoneNumber)
-  commit(types.SET_STORED_PHONE_NUMBER, phoneNumber)
+  if (phoneNumber) {
+    commit(types.SET_STORED_PHONE_NUMBER, phoneNumber)
+    localStorage.setItem(config.STORAGE_PHONE_NUMBER, phoneNumber)
+  }
 }
 
 export const setStoredCountryCode = ({ commit }: IActionContext, countryCode: string) => {
-  localStorage.setItem(config.STORAGE_COUNTRY_CODE, countryCode)
-  commit(types.SET_STORED_COUNTRY_CODE, countryCode)
+  if (countryCode) {
+    localStorage.setItem(config.STORAGE_COUNTRY_CODE, countryCode)
+    commit(types.SET_STORED_COUNTRY_CODE, countryCode)
+  }
 }

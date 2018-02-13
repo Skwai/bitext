@@ -12,7 +12,7 @@ A Firebase and Vue.js project to send SMS notifications to users when Bitcoin re
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 yarn install
 

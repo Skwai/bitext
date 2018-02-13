@@ -1,10 +1,11 @@
-import mutations from '../src/store/mutations'
-import * as types from '../src/store/types'
+import mutations from '@/store/mutations'
+import * as types from '@/store/types'
+import State from '@/store/State'
 
 describe('mutations.js', () => {
   describe(types.SET_BTC_PRICE, () => {
     it('Adds updates the btcPrice in the store', () => {
-      const state = { btcPrice: null }
+      const state = new State({ btcPrice: null })
       mutations[types.SET_BTC_PRICE](state, 123)
       expect(state.btcPrice).toEqual(123)
       mutations[types.SET_BTC_PRICE](state, 123.45)
@@ -14,16 +15,16 @@ describe('mutations.js', () => {
 
   describe(types.SET_SUBMITTED, () => {
     it('Sets the submitted state in the store to true', () => {
-      const state = { submitted: false }
-      mutations[types.SET_SUBMITTED](state)
+      const state = new State({ submitted: false })
+      mutations[types.SET_SUBMITTED](state, null)
       expect(state.submitted).toEqual(true)
     })
   })
 
   describe(types.SET_UNSUBMITTED, () => {
     it('Sets the submitted state in the store to false', () => {
-      const state = { submitted: true }
-      mutations[types.SET_UNSUBMITTED](state)
+      const state = new State({ submitted: true })
+      mutations[types.SET_UNSUBMITTED](state, null)
       expect(state.submitted).toEqual(false)
     })
   })

@@ -5,4 +5,8 @@ export default class User {
   public dir: 'LT' | 'GT' = 'GT'
   public phoneCountryCode: string | null = '+1'
   public phoneNumber: string | null = null
+
+  constructor(args = {}) {
+    Object.assign(this, args)
+  }
 }

@@ -83,7 +83,7 @@ import AppButton from './AppButton.vue'
 import AppLoading from './AppLoading.vue'
 
 interface ICountry {
-  name: string,
+  name: string
   phoneCode: string
   code: string
 }
@@ -103,10 +103,14 @@ interface ICountryCode {
 export default class TheForm extends Vue {
   private error: string | null = null
   private submitting: boolean = false
-  private user: User = new User()
+  private user = new User({
+    phoneCountryCode: '+1'
+  })
 
   @Action private setStoredPhoneNumber: (phoneNumber: string) => void
   @Action private setStoredCountryCode: (countryCode: string) => void
+  @Action private addUser: (user: User) => Promise<void>
+  @Action private wasSubmitted: () => void
   @Getter private storedPhoneNumber: string
   @Getter private storedCountryCode: string
 
@@ -151,21 +155,20 @@ export default class TheForm extends Vue {
     this.submitting = true
     this.error = null
     try {
-      await this.$store.dispatch('addUser', this.user)
-      this.$store.dispatch('wasSubmitted')
+      await this.addUser(this.user)
+      this.wasSubmitted()
     } catch (err) {
       this.error = 'There was a problem submitting form'
     } finally {
       this.submitting = false
     }
   }
+
   private loadStoredPhoneNumber() {
     const { user, storedPhoneNumber, storedCountryCode } = this
-
     if (storedPhoneNumber) {
       user.phoneNumber = storedPhoneNumber
     }
-
     if (storedCountryCode) {
       user.phoneCountryCode = storedCountryCode
     }
@@ -178,98 +181,113 @@ export default class TheForm extends Vue {
 </script>
 
 <style lang="stylus" module>
-@require "../styles/config"
+.AppForm {
+  &__Label {
+    position: absolute;
+    top: -999rem;
+  }
 
-.AppForm
-  &__Label
-    sr()
+  &__Field {
+    margin: 0 0 1.5rem;
+    align-items: center;
+  }
 
-  &__Field
-    margin: 0 0 spacingBase
-    align-items: center
+  &__FieldValid &__Inputs {
+    color: #499AFF;
 
-  &__FieldValid &__Inputs
-    color: colorPrimary
+    &::after {
+      opacity: 1;
+      background-image: embedurl('../assets/check.svg', 'utf8');
+    }
+  }
 
-    &::after
-      opacity: 1
-      background-image: embedurl("../assets/check.svg", "utf8")
+  &__Error {
+    color: #D0021B;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+  }
 
-  &__Error
-    color: colorError
-    margin-bottom: spacingBase
-    text-align: center
-    font-weight: 500
+  &__Inputs {
+    display: flex;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: currentColor 0 0 0 1px;
+    position: relative;
 
-  &__Inputs
-    display: flex
-    background: #fff
-    border-radius: 2px
-    box-shadow: currentColor 0 0 0 1px
-    position: relative
+    &::after {
+      position: absolute;
+      content: '';
+      background: currentColor;
+      right: 0;
+      height: 100%;
+      top: 0;
+      width: 2.5rem;
+      opacity: 0;
+      background-size: 1.5rem 1.5rem;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  }
 
-    &::after
-      position: absolute
-      content: ""
-      background: currentColor
-      right: 0
-      height: 100%
-      top: 0
-      width: 2.5rem
-      opacity: 0
-      background-size: 1.5rem 1.5rem
-      background-position: center center
-      background-repeat: no-repeat
+  &__InputWrap + &__InputWrap {
+    border-left: currentColor solid 1px;
+  }
 
-  &__InputWrap + &__InputWrap
-    border-left: currentColor solid 1px
+  &__InputWrap {
+    flex: 50%;
+    position: relative;
 
-  &__InputWrap
-    flex: 50%
-    position: relative
+    &Select {
+      cursor: pointer;
 
-    &Select
-      cursor: pointer
+      &::after {
+        content: '';
+        border-top: 5px currentColor solid;
+        border-left: 5px transparent solid;
+        border-right: 5px transparent solid;
+        width: 0;
+        height: 0;
+        right: 1rem;
+        top: 50%;
+        transform: translate(0, -50%);
+        position: absolute;
+      }
+    }
+  }
 
-      &::after
-        content: ""
-        border-top: 5px currentColor solid
-        border-left: 5px transparent solid
-        border-right: 5px transparent solid
-        width: 0
-        height: 0
-        right: 1rem
-        top: 50%
-        transform: translate(0, -50%)
-        position: absolute
+  &__Input {
+    padding: 1rem;
+    border: 0;
+    background: transparent;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    transition: 0.2s;
+    width: 100%;
+    border-radius: 0; // iOS
 
-  &__Input
-    padding: 1rem
-    border: 0
-    background: transparent
-    -moz-appearance: none
-    -webkit-appearance: none
-    box-sizing: border-box
-    transition: transitionBase
-    width: 100%
-    border-radius: 0 // iOS
+    &::placeholder {
+      color: currentColor;
+      opacity: 0.7;
+    }
 
-    &::placeholder
-      color: currentColor
-      opacity: .7
+    &:focus, &:hover {
+      outline: 0;
+      background: rgba(#499AFF, 0.1);
+    }
+  }
 
-    &:focus,
-    &:hover
-      outline: 0
-      background: rgba(colorPrimary, .1)
+  &__Submit {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
+    text-align: center;
+  }
 
-  &__Submit
-    margin-top: spacingLarge
-    margin-bottom: spacingLarge
-    text-align: center
-
-  &__Info
-    font-size: 87.5%
-    opacity: .7
-    text-align: center
+  &__Info {
+    font-size: 87.5%;
+    opacity: 0.7;
+    text-align: center;
+  }
+}
 </style>
