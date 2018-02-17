@@ -94,6 +94,10 @@ interface ICountryCode {
   code: string
 }
 
+interface IValidations {
+  [key: string]: boolean
+}
+
 @Component({
   components: {
     AppButton,
@@ -130,7 +134,7 @@ export default class TheForm extends Vue {
     })
   }
 
-  get validations() {
+  get validations(): IValidations {
     const { phone } = this.parsedPhoneNumber
     const phoneNumber = phone && phone === this.user.phoneNumber
     const price = !isNaN(this.user.price as number) && Number(this.user.price) > 0
