@@ -18,6 +18,11 @@ import { Action, Getter } from 'vuex-class'
 import AppLoading from './AppLoading.vue'
 import ThePriceChart from './ThePriceChart.vue'
 
+interface IFormattedPrice {
+  cents: string
+  dollars: string
+}
+
 const UPDATE_INTERVAL = 30 * 1000 // ms
 
 @Component({
@@ -27,15 +32,17 @@ const UPDATE_INTERVAL = 30 * 1000 // ms
   }
 })
 export default class ThePrice extends Vue {
+  private timer: number | undefined = undefined
+
   @Getter private btcPrice: number
   @Action private getBtcPrice: () => Promise<void>
 
   private async getPrice() {
     await this.getBtcPrice()
-    setTimeout(this.getPrice, UPDATE_INTERVAL)
+    this.timer = window.setTimeout(this.getPrice, UPDATE_INTERVAL)
   }
 
-  get price() {
+  get price(): IFormattedPrice {
     const { btcPrice } = this
     const [dollars, cents] = Number(btcPrice)
       .toFixed(2)
@@ -54,6 +61,12 @@ export default class ThePrice extends Vue {
 
   private created() {
     this.getPrice()
+  }
+
+  private destroyed() {
+    if (this.timer) {
+      window.clearTimeout(this.timer)
+    }
   }
 }
 </script>

@@ -27,13 +27,14 @@ const CHARTIST_OPTIONS: Chartist.ILineChartOptions = {
 
 @Component
 export default class ThePriceChart extends Vue {
-  private chart: Chartist.IChartistLineChart | null = null
+  // undefined properties are non-reactive
+  // https://github.com/vuejs/vue-class-component#undefined-will-not-be-reactive
+  private chart: Chartist.IChartistLineChart | undefined = undefined
 
   @Getter private historicalBtcPrices: any
-
   @Action private getHistoricalBtcPrices: () => Promise<void>
 
-  private async created() {
+  private async mounted() {
     await this.getHistoricalBtcPrices()
     await this.$nextTick()
     this.renderChart()
