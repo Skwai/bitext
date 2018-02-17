@@ -18,6 +18,7 @@
     "chartist": "^0.11.0",
     "firebase": "4.5.0",
     "libphonenumber-js": "^0.4.32",
+    "object.values": "^1.0.4",
     "register-service-worker": "^1.1.0",
     "vue": "^2.5.13",
     "vue-class-component": "^6.1.2",
@@ -48,9 +49,20 @@
     "vue-test-utils": "^1.0.0-beta.11",
     "webpack": "^3.10.0"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "vue"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "vue"
+    ],
     "transform": {
       "^.+\\.vue$": "vue-jest",
       "^.+\\.tsx?$": "ts-jest"
@@ -58,7 +70,9 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     },
-    "snapshotSerializers": ["jest-serializer-vue"],
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ],
     "mapCoverage": true
   }
 }

@@ -10,7 +10,9 @@ interface IActionContext extends ActionContext<State, any> {}
 
 export const addUser = async (context: IActionContext, user: User) => {
   const data = { ...user }
-  await db.collection('users').add(data)
+  if (process.env.NODE_ENV !== 'testing') {
+    await db.collection('users').add(data)
+  }
 }
 
 export const wasSubmitted = ({ commit }: IActionContext) => {

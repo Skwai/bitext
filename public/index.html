@@ -20,9 +20,9 @@
     <noscript>Please enable JavaScript</noscript>
     <div id="App"></div>
     <script>
-      window.fetch || '<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"><\/script>'
-      window.Promise || '<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"><\/script>'
-    </script>
+        window.fetch || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"><\/script>');
+        (window.Promise && Object.assign) || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"><\/script>');
+      </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108131527-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

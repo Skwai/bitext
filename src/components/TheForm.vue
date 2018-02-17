@@ -141,7 +141,8 @@ export default class TheForm extends Vue {
   }
 
   get isValid() {
-    return Object.values(this.validations).every((v) => v)
+    const { validations } = this
+    return Object.keys(validations).every((k) => validations[k])
   }
 
   get parsedPhoneNumber() {
