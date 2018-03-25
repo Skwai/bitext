@@ -8,7 +8,7 @@ A Firebase and Vue.js project to send SMS notifications to users when Bitcoin re
 
 ## CI
 
-`https://`
+`https://circleci.com`
 
 ## Build Setup
 

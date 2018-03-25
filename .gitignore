@@ -9,6 +9,7 @@ test/e2e/videos
 selenium-debug.log
 functions/.runtimeconfig.json
 coverage/
+appengine/lib
 
 # Firebase
 firebase-debug.log
