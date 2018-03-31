@@ -103,36 +103,43 @@ exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0
         twilio: config.twilio
     });
     try {
+        const prevPrice = yield notify.getPreviousPrice();
         // Get the current bitcoin price
-        let price;
+        let currPrice;
         try {
-            price = yield notify.getPrice();
+            currPrice = yield notify.getPrice();
+            yield notify.saveCurrentPrice(currPrice);
         }
         catch (err) {
             throw Error(`Could not retrieve price: ${err.message}`);
         }
-        const formattedPrice = Notify_1.default.formatPrice(price);
+        // If we don't have a previous price then end here
+        if (prevPrice === null) {
+            throw Error(`There was no previous price in the database`);
+        }
+        const formattedPrice = Notify_1.default.formatPrice(currPrice);
         console.info(`Fetched price: ${formattedPrice}`);
         // Get the users to notify
         let users;
         try {
-            users = yield notify.getUsers(price);
+            users = yield notify.getUsersToNotify(currPrice, prevPrice);
         }
         catch (err) {
-            throw Error('Could not retrieve users from Firestore');
+            throw Error(`Could not retrieve users from Firestore: ${err.message}`);
         }
+        // Check if we have any users to notify
         if (!users.length) {
             console.info('No users to notify');
             return;
         }
-        // Message users
+        // Send SMS to all of the users
         const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
         console.info(`Messaging users: ${users.length}`);
         try {
             yield notify.sendUsersNotification({ from, users, message });
         }
         catch (err) {
-            throw Error('Failed to notify users');
+            throw Error(`Failed to notify users: ${err.message}`);
         }
         console.info('Messaging complete');
     }
@@ -196,29 +203,28 @@ class Notify {
         });
     }
     /** Get users who want to be notified of the price */
-    getUsers(price) {
+    getUsersToNotify(currPrice, prevPrice) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [high, low] = yield Promise.all([this.getHighUsers(price), this.getLowUsers(price)]);
-            return [...high.docs, ...low.docs];
+            const colRef = this.db.collection('users');
+            const query = colRef.where('notified', '==', null);
+            // price has gone down
+            if (currPrice < prevPrice) {
+                const { docs } = yield query
+                    .where('price', '<=', prevPrice)
+                    .where('price', '>=', currPrice)
+                    .get();
+                return docs;
+            }
+            // price has gone up
+            if (currPrice > prevPrice) {
+                const { docs } = yield query
+                    .where('price', '>=', prevPrice)
+                    .where('price', '<=', currPrice)
+                    .get();
+                return docs;
+            }
+            return [];
         });
-    }
-    /** Get users who want to be notified of a high price */
-    getHighUsers(price) {
-        const collection = this.db.collection('users');
-        return collection
-            .where('notified', '==', null)
-            .where('dir', '==', GT)
-            .where('price', '<=', price)
-            .get();
-    }
-    /** Get users who want to be notified of a low price */
-    getLowUsers(price) {
-        const collection = this.db.collection('users');
-        return collection
-            .where('notified', '==', null)
-            .where('dir', '==', LT)
-            .where('price', '>=', price)
-            .get();
     }
     /** Get a user's phone number */
     getUserPhoneNumber(userData) {
@@ -242,7 +248,7 @@ class Notify {
             }
         });
     }
-    /** Send an SMS */
+    /** Send a single SMS message via Twilio */
     sendTwilioMessage({ from, to, message }) {
         return __awaiter(this, void 0, void 0, function* () {
             // return's a `Q` promise. Sanitize to native promise by awaiting result
@@ -267,6 +273,26 @@ class Notify {
             user,
             message
         })));
+    }
+    /** Save the current price to the database */
+    saveCurrentPrice(price) {
+        return this.getPriceDocRef().set({
+            usd: price
+        });
+    }
+    /** Get the previous price from the database */
+    getPreviousPrice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const doc = yield this.getPriceDocRef().get();
+            if (!doc.exists) {
+                return null;
+            }
+            return Number(doc.data().usd);
+        });
+    }
+    /** Get the price document reference */
+    getPriceDocRef() {
+        return this.db.collection('price').doc('current');
     }
     /** Create a new Twilio instance */
     createTwilioInstance(twilioAccountSid, twilioAuthToken) {

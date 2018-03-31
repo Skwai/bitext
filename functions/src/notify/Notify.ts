@@ -34,29 +34,33 @@ export default class Notify {
   }
 
   /** Get users who want to be notified of the price */
-  public async getUsers(price: number): Promise<FirebaseFirestore.DocumentSnapshot[]> {
-    const [high, low] = await Promise.all([this.getHighUsers(price), this.getLowUsers(price)])
-    return [...high.docs, ...low.docs]
-  }
+  public async getUsersToNotify(
+    currPrice: number,
+    prevPrice: number
+  ): Promise<FirebaseFirestore.DocumentSnapshot[]> {
+    const colRef = this.db.collection('users')
 
-  /** Get users who want to be notified of a high price */
-  public getHighUsers(price: number): Promise<FirebaseFirestore.QuerySnapshot> {
-    const collection = this.db.collection('users')
-    return collection
-      .where('notified', '==', null)
-      .where('dir', '==', GT)
-      .where('price', '<=', price)
-      .get()
-  }
+    const query = colRef.where('notified', '==', null)
 
-  /** Get users who want to be notified of a low price */
-  public getLowUsers(price: number): Promise<FirebaseFirestore.QuerySnapshot> {
-    const collection = this.db.collection('users')
-    return collection
-      .where('notified', '==', null)
-      .where('dir', '==', LT)
-      .where('price', '>=', price)
-      .get()
+    // price has gone down
+    if (currPrice < prevPrice) {
+      const { docs } = await query
+        .where('price', '<=', prevPrice)
+        .where('price', '>=', currPrice)
+        .get()
+      return docs
+    }
+
+    // price has gone up
+    if (currPrice > prevPrice) {
+      const { docs } = await query
+        .where('price', '>=', prevPrice)
+        .where('price', '<=', currPrice)
+        .get()
+      return docs
+    }
+
+    return []
   }
 
   /** Get a user's phone number */
@@ -89,7 +93,7 @@ export default class Notify {
     }
   }
 
-  /** Send an SMS */
+  /** Send a single SMS message via Twilio */
   public async sendTwilioMessage({
     from,
     to,
@@ -136,6 +140,29 @@ export default class Notify {
         })
       )
     )
+  }
+
+  /** Save the current price to the database */
+  public saveCurrentPrice(price: number) {
+    return this.getPriceDocRef().set({
+      usd: price
+    })
+  }
+
+  /** Get the previous price from the database */
+  public async getPreviousPrice(): Promise<number | null> {
+    const doc = await this.getPriceDocRef().get()
+
+    if (!doc.exists) {
+      return null
+    }
+
+    return Number(doc.data().usd)
+  }
+
+  /** Get the price document reference */
+  private getPriceDocRef() {
+    return this.db.collection('price').doc('current')
   }
 
   /** Create a new Twilio instance */
