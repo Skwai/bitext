@@ -1,0 +1,4 @@
+cron:
+- description: Trigger a bitcoin price check every minute
+  url: /cron
+  schedule: every 2 mins
