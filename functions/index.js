@@ -173,7 +173,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fetch_1 = __webpack_require__(5);
+__webpack_require__(5);
 const Twilio = __webpack_require__(6);
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 const LT = 'LT';
@@ -190,7 +190,7 @@ class Notify {
     /** Get the current Bitcoin price */
     getPrice() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield node_fetch_1.default(COINDESK_API_URL);
+            const response = yield fetch(COINDESK_API_URL);
             const data = yield response.json();
             return data.bpi.USD.rate_float;
         });
@@ -280,7 +280,7 @@ exports.default = Notify;
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("node-fetch");
+module.exports = require("isomorphic-fetch");
 
 /***/ }),
 /* 6 */

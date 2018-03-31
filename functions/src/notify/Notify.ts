@@ -1,6 +1,6 @@
 // https://cloud.google.com/nodejs/docs/reference/firestore/0.8.x/QuerySnapshot
 
-import fetch from 'node-fetch'
+import 'isomorphic-fetch'
 import * as Twilio from 'twilio'
 
 const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json'
