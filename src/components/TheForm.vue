@@ -39,17 +39,6 @@
       [$style.AppForm__FieldValid]: validations.price
     }">
       <div :class="$style.AppForm__Inputs">
-        <label :class="[$style.AppForm__InputWrap, $style.AppForm__InputWrapSelect]">
-          <span :class="$style.AppForm__Label">When price is</span>
-          <select
-            :class="$style.AppForm__Input"
-            id="AppForm__Dir"
-            v-model="user.dir"
-          >
-            <option value="GT">When more than</option>
-            <option value="LT">When less than</option>
-          </select>
-        </label>
         <label :class="$style.AppForm__InputWrap">
           <span :class="$style.AppForm__Label">Price (USD)</span>
           <input
@@ -57,7 +46,7 @@
             :class="$style.AppForm__Input"
             type="tel"
             v-model.number="user.price"
-            placeholder="$ USD"
+            placeholder="When price reaches $ USD"
           >
         </label>
       </div>
