@@ -1,7 +1,7 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{user} {
-      allow create: if request.resource.data.keys().hasAll(["notified", "price", "dir", "phoneCountryCode", "phoneNumber"]);
+      allow create: if request.resource.data.keys().hasAll(["notified", "price", "phoneCountryCode", "phoneNumber"]);
     }
   }
 }
