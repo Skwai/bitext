@@ -3,7 +3,6 @@
     {
       "collectionId": "users",
       "fields": [
-        { "fieldPath": "dir", "mode": "ASCENDING" },
         { "fieldPath": "notified", "mode": "ASCENDING" },
         { "fieldPath": "price", "mode": "ASCENDING" }
       ]
