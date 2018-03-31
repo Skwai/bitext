@@ -12,6 +12,7 @@
     "no-consecutive-blank-lines": false,
     "prettier": true,
     "no-shadowed-variable": false,
-    "no-this-assignment": [true, { "allow-destructuring": true }]
+    "no-this-assignment": [true, { "allow-destructuring": true }],
+    "no-console": false
   }
 }

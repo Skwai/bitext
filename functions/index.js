@@ -70,7 +70,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const notify_1 = __webpack_require__(1);
+var notify_1 = __webpack_require__(1);
 exports.notify = notify_1.default;
 
 
@@ -96,41 +96,48 @@ const Notify_1 = __webpack_require__(4);
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const config = functions.config();
+const from = config.twilio.phonenumber;
 exports.default = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const notify = new Notify_1.default({
         db,
-        from: 'Bitext',
         twilio: config.twilio
     });
-    const from = config.twilio.phonenumber;
     try {
-        const price = yield notify.getPrice();
-        const formattedPrice = notify.formatPrice(price);
-        console.info(`Fetched price: ${formattedPrice}`);
+        // Get the current bitcoin price
+        let price;
         try {
-            const users = yield notify.getUsers(price);
-            if (users.length) {
-                const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
-                console.info(`Messaging users: ${users.length}`);
-                const promises = users.map(user => notify.sendUserMessage({
-                    from,
-                    user,
-                    message
-                }));
-                yield Promise.all(promises);
-                console.info('Messaging complete');
-            }
-            else {
-                console.info('No users to notify');
-            }
+            price = yield notify.getPrice();
         }
         catch (err) {
-            console.error('Could not retrieve users');
-            res.sendStatus(204).end();
+            throw Error(`Could not retrieve price: ${err.message}`);
         }
+        const formattedPrice = Notify_1.default.formatPrice(price);
+        console.info(`Fetched price: ${formattedPrice}`);
+        // Get the users to notify
+        let users;
+        try {
+            users = yield notify.getUsers(price);
+        }
+        catch (err) {
+            throw Error('Could not retrieve users from Firestore');
+        }
+        if (!users.length) {
+            console.info('No users to notify');
+            return;
+        }
+        // Message users
+        const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`;
+        console.info(`Messaging users: ${users.length}`);
+        try {
+            yield notify.sendUsersNotification({ from, users, message });
+        }
+        catch (err) {
+            throw Error('Failed to notify users');
+        }
+        console.info('Messaging complete');
     }
     catch (err) {
-        console.error(`Could not retrieve price: ${err.message}`);
+        console.error(err);
     }
     finally {
         res.sendStatus(204).end();
@@ -172,13 +179,13 @@ const COINDESK_API_URL = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 const LT = 'LT';
 const GT = 'GT';
 class Notify {
-    constructor({ db, from, twilio }) {
-        Object.assign(this, { db, from, twilio });
-        this.initTwilio(twilio.accountsid, twilio.authtoken);
+    /** Format price */
+    static formatPrice(price) {
+        return `$${price.toFixed(2).toLocaleString()}`;
     }
-    /** Create a new Twilio instance */
-    initTwilio(sid, token) {
-        this.twilio = new Twilio.RestClient(sid, token);
+    constructor({ db, twilio }) {
+        Object.assign(this, { db, twilio });
+        this.createTwilioInstance(twilio.accountsid, twilio.authtoken);
     }
     /** Get the current Bitcoin price */
     getPrice() {
@@ -191,17 +198,15 @@ class Notify {
     /** Get users who want to be notified of the price */
     getUsers(price) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [high, low] = yield Promise.all([
-                this.getHighUsers(price),
-                this.getLowUsers(price)
-            ]);
+            const [high, low] = yield Promise.all([this.getHighUsers(price), this.getLowUsers(price)]);
             return [...high.docs, ...low.docs];
         });
     }
     /** Get users who want to be notified of a high price */
     getHighUsers(price) {
         const collection = this.db.collection('users');
-        return collection.where('notified', '==', null)
+        return collection
+            .where('notified', '==', null)
             .where('dir', '==', GT)
             .where('price', '<=', price)
             .get();
@@ -209,7 +214,8 @@ class Notify {
     /** Get users who want to be notified of a low price */
     getLowUsers(price) {
         const collection = this.db.collection('users');
-        return collection.where('notified', '==', null)
+        return collection
+            .where('notified', '==', null)
             .where('dir', '==', LT)
             .where('price', '>=', price)
             .get();
@@ -220,12 +226,12 @@ class Notify {
         return [phoneCountryCode, phoneNumber].join('');
     }
     /** Send a message to a user */
-    sendUserMessage({ from, user, message }) {
+    sendUserNotification({ from, user, message }) {
         return __awaiter(this, void 0, void 0, function* () {
             const userData = user.data();
             const to = this.getUserPhoneNumber(userData);
             try {
-                yield this.sendMessage({ from, to, message });
+                yield this.sendTwilioMessage({ from, to, message });
                 this.setUserNotified(user);
             }
             catch (err) {
@@ -237,7 +243,7 @@ class Notify {
         });
     }
     /** Send an SMS */
-    sendMessage({ from, to, message }) {
+    sendTwilioMessage({ from, to, message }) {
         return __awaiter(this, void 0, void 0, function* () {
             // return's a `Q` promise. Sanitize to native promise by awaiting result
             const result = yield this.twilio.messages.create({
@@ -248,15 +254,23 @@ class Notify {
             return result;
         });
     }
-    /** Format price */
-    formatPrice(price) {
-        return `$${price.toFixed(2).toLocaleString()}`;
-    }
     /** Set notified on the user */
     setUserNotified(user) {
         return user.ref.update({
             notified: new Date()
         });
+    }
+    /** Message an array of users */
+    sendUsersNotification({ from, users, message }) {
+        return Promise.all(users.map((user) => this.sendUserNotification({
+            from,
+            user,
+            message
+        })));
+    }
+    /** Create a new Twilio instance */
+    createTwilioInstance(twilioAccountSid, twilioAuthToken) {
+        this.twilio = new Twilio.RestClient(twilioAccountSid, twilioAuthToken);
     }
 }
 exports.default = Notify;
