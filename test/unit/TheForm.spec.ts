@@ -47,8 +47,7 @@ describe('TheForm.vue', () => {
       user: {
         phoneNumber: '412345678',
         phoneCountryCode: '+61',
-        price: 5000,
-        dir: 'LT'
+        price: 5000
       }
     })
     const button = wrapper.find('button')
