@@ -34,10 +34,3 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn test
-
-      - deploy:
-         name: Deploy Master to Firebase
-         command: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            yarn build && cd functions && npm i && cd ../ && ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --non-interactive
-          fi
