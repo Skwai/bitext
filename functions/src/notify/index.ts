@@ -21,18 +21,22 @@ export default functions.https.onRequest(async (req, res) => {
     let currPrice
     try {
       currPrice = await notify.getPrice()
-      await notify.saveCurrentPrice(currPrice)
+      console.info(`Fetched price: ${Notify.formatPrice(currPrice)}`)
     } catch (err) {
       throw Error(`Could not retrieve price: ${err.message}`)
+    }
+
+    try {
+      await notify.saveCurrentPrice(currPrice)
+    } catch (err) {
+      throw Error(`Could not save current price: ${err.message}`)
     }
 
     // If we don't have a previous price then end here
     if (prevPrice === null) {
       throw Error(`There was no previous price in the database`)
     }
-
-    const formattedPrice = Notify.formatPrice(currPrice)
-    console.info(`Fetched price: ${formattedPrice}`)
+    console.info(`Retrieved previous price: ${Notify.formatPrice(prevPrice)}`)
 
     // Get the users to notify
     let users
@@ -49,14 +53,17 @@ export default functions.https.onRequest(async (req, res) => {
     }
 
     // Send SMS to all of the users
-    const message = `Hi. Bitcoin is now at ${formattedPrice} USD. This is a one-time alert`
+    const message = `Hi. Bitcoin is now at ${Notify.formatPrice(
+      currPrice
+    )} USD. This is a one-time alert`
     console.info(`Messaging users: ${users.length}`)
+
     try {
       await notify.sendUsersNotification({ from, users, message })
+      console.info('Messaging complete')
     } catch (err) {
       throw Error(`Failed to notify users: ${err.message}`)
     }
-    console.info('Messaging complete')
   } catch (err) {
     console.error(err)
   } finally {
